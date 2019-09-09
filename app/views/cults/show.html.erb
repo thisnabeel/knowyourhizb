@@ -1,0 +1,5 @@
+<% if admin_signed_in? %>
+  <%= render "admin_show" %>
+<% else %>
+  <%= render "user_show" %>
+<% end %>

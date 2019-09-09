@@ -1,0 +1,37 @@
+<%= form_for(@cult) do |f| %>
+  <% if @cult.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@cult.errors.count, "error") %> prohibited this cult from being saved:</h2>
+
+      <ul>
+      <% @cult.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :release_date %><br>
+    <%= f.number_field :release_date %>
+  </div>
+  <div class="field">
+    <%= f.label :leading_figure %><br>
+    <%= f.text_field :leading_figure %>
+  </div>
+  <div class="field">
+    <%= f.label :technical_terms %><br>
+    <%= f.text_area :technical_terms %>
+  </div>
+  <div class="field">
+    <%= f.label :cult_id %><br>
+    <%= f.number_field :cult_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

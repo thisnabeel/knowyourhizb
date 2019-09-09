@@ -1,0 +1,198 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @cult.title %>
+</p>
+
+<p>
+  <strong>Release date:</strong>
+  <%= @cult.release_date %>
+</p>
+
+<p>
+  <strong>Leading figure:</strong>
+  <%= @cult.leading_figure %>
+</p>
+
+<p>
+  <strong>Cult:</strong>
+  <%= @cult.cult_id %>
+</p>
+
+<hr>
+
+<p>
+  <h2>Technical Terms:</h2>
+  <ul class="terms-list">
+    <% @cult.technical_terms.try(:each) do |t| %>
+      <li>
+        <span class="title">
+          <%= t["title"] %>
+        </span>
+        <i class="fa fa-times remove"></i>
+        <!--  -->
+        <div class="body">
+          <%= t["body"] %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <input type="text" class="form-control t-form">
+  <i class="fa fa-plus add-t-form"></i>
+</p>
+
+<hr>
+
+
+<p>
+  <h2>Scriptures:</h2>
+  <ul class="scriptures-list">
+    <% @cult.scriptures.try(:each) do |t| %>
+      <li>
+        <span class="title">
+          <%= t["title"] %>
+        </span>
+        <i class="fa fa-times remove"></i>
+        <!--  -->
+        <div class="body">
+          <%= t["body"] %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <input type="text" class="form-control s-form">
+  <i class="fa fa-plus add-s-form"></i>
+</p>
+
+<hr>
+
+<p>
+  <h2>Nested Cults:</h2>
+  <ul class="c-list">
+    <% @cult.cults.try(:each) do |cult| %>
+      <li>
+        <a href="/cults/<%= cult.id %>"><%= cult.title %></a> | 
+        <%= link_to 'Destroy', cult, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </li>
+    <% end %>
+  </ul>
+    <input type="text" class="form-control c-form">
+    <i class="fa fa-plus add-c-form"></i>
+</p>
+
+
+<%= link_to 'Edit', edit_cult_path(@cult) %> |
+<%= link_to 'Back', cults_path %>
+
+<script>
+  // 
+  $(".add-c-form").on("click", function(){
+    val = $(".c-form").val()
+      $.ajax({
+         type: "POST",
+         dataType: "json",
+         url: '/cults',
+         contentType: 'application/json',
+         data: JSON.stringify({ 
+            title: val,
+            cult_id: "<%= @cult.id %>",
+            _method:'post' 
+         }),
+         success: function(res){
+          console.log(res)
+          // Location.reload()
+          location = location
+         }
+      })
+  })
+
+  // 
+  $(".add-s-form").on("click", function(){
+
+      title = $(".s-form").val();
+      body = "";
+
+      $(".scriptures-list").append(`
+        <li>
+          <span class="title">`+title+`</span>
+          <div class="body">`+body+`</div>
+        </li>
+      `)
+
+      $(".s-form").val("");
+
+      scriptures = []
+      $(".scriptures-list li").each(function(){
+        scriptures.push({
+          title: $(this).find(".title").html(),
+          body: $(this).find(".body").html(),
+        })
+      })
+
+      console.log(scriptures)
+      $.ajax({
+         type: "PUT",
+         dataType: "json",
+         url: '/cults/<%= @cult.id %>',
+         contentType: 'application/json',
+         data: JSON.stringify({ 
+            scriptures: scriptures,
+            _method:'post' 
+         }),
+         success: function(res){
+          console.log(res)
+          // Location.reload()
+          location = location
+         }
+      })
+  })
+
+
+  // 
+  $(".add-t-form").on("click", function(){
+      
+      title = $(".t-form").val();
+      body = "";
+
+      $(".terms-list").append(`
+        <li>
+          <span class="title">`+title+`</span>
+          <div class="body">`+body+`</div>
+        </li>
+      `)
+
+      $(".t-form").val("");
+
+      terms = []
+      $(".terms-list li").each(function(){
+        terms.push({
+          title: $(this).find(".title").html(),
+          body: $(this).find(".body").html(),
+        })
+      })
+
+      console.log(terms)
+
+      $.ajax({
+         type: "PUT",
+         dataType: "json",
+         url: '/cults/<%= @cult.id %>',
+         contentType: 'application/json',
+         data: JSON.stringify({ 
+            technical_terms: terms,
+            _method:'post' 
+         }),
+         success: function(res){
+          console.log(res)
+          // Location.reload()
+          location = location
+         }
+      })
+  })
+
+  $(".remove").on("click", function(index, item){
+    $(this).closest("li").remove()
+  })
+
+</script>

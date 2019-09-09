@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Cults</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Release date</th>
+      <th>Leading figure</th>
+      <th>Technical terms</th>
+      <th>Cult</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cults.each do |cult| %>
+      <tr>
+        <td><%= cult.title %></td>
+        <td><%= cult.release_date %></td>
+        <td><%= cult.leading_figure %></td>
+        <td><%= cult.technical_terms %></td>
+        <td><%= cult.cult_id %></td>
+        <td><%= link_to 'Show', cult %></td>
+        <td><%= link_to 'Edit', edit_cult_path(cult) %></td>
+        <td><%= link_to 'Destroy', cult, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cult', new_cult_path %>

@@ -1,0 +1,88 @@
+<style>
+  .after-prophet {
+    padding: 0 10px;
+    color: #fff;
+    border-radius: 10px;
+    background-color: red;
+  }
+
+  .ap {
+    color: #ff9090;
+  }
+
+  .ce {
+    color: #80bdff;
+  }
+
+</style>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @cult.title %>
+</p>
+
+<p>
+  <strong>Release date:</strong>
+<% if @cult.release_date.present? %> 
+            ~ <%= @cult.release_date %> 
+              <span class="ce">C.E.</span> 
+              <span class="after-prophet">
+                <%= @cult.release_date - 632 %> 
+                <span class="ap">A.P.</span>
+              </span>
+          <% end %>
+</p>
+
+<p>
+  <strong>Leading figure:</strong>
+  <%= @cult.leading_figure %>
+</p>
+
+<hr>
+
+<p>
+  <h2>Technical Terms:</h2>
+  <ul class="terms-list">
+    <% @cult.technical_terms.try(:each) do |t| %>
+      <li>
+        <span class="title">
+          <%= t["title"] %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+<hr>
+
+
+<p>
+  <h2>Scriptures:</h2>
+  <ul class="scriptures-list">
+    <% @cult.scriptures.try(:each) do |t| %>
+      <li>
+        <span class="title">
+          <%= t["title"] %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+<hr>
+
+<p>
+  <h2>Nested Cults:</h2>
+  <ul class="c-list">
+    <% @cult.cults.try(:each) do |cult| %>
+      <li>
+        <a href="/cults/<%= cult.id %>"><%= cult.title %></a>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+
+<%= link_to 'Back', "/" %>

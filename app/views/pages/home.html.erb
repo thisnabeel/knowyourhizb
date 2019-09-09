@@ -1,0 +1,72 @@
+<style>
+	li > li {
+		margin-left: 20px;
+		list-style-type: circle;
+	}
+
+	li > li > li {
+		margin-left: 20px;
+	}
+
+	li {
+		margin: 6px;
+	}
+
+	.after-prophet {
+		padding: 0 10px;
+		color: #fff;
+		border-radius: 10px;
+		background-color: red;
+	}
+
+	.ap {
+		color: #ff9090;
+	}
+
+	.ce {
+		color: #80bdff;
+	}
+
+	.title {
+		color: #3c2d2d;
+		font-size: 20px;
+	}
+</style>
+
+<h2 class="text-center">
+	The approval of any cult is the approval of cults in general.
+</h2>
+<hr>
+
+A.P. = Years After the Prophet
+<hr>
+
+<ul>
+	<% Cult.all.order("release_date ASC").each do |c| %>
+		<li class="cult" data-id="<%= c.id %>" data-belongs="<%= c.cult_id %>">
+			<a href="/cults/<%= c.id %>" target="_blank">
+			
+				<span class="title">
+					<%= c.title %> 
+				</span>
+					<% if c.release_date.present? %> 
+						~ <%= c.release_date %> 
+							<span class="ce">C.E.</span> 
+							<span class="after-prophet">
+								<%= c.release_date - 632 %> 
+								<span class="ap">A.P.</span>
+							</span>
+					<% end %>
+			</a>
+		</li>
+	<% end %>
+</ul>
+
+<br>
+
+<script>
+	$(".cult").each(function(){
+		belongs = $(this).attr("data-belongs")
+		$(".cult[data-id='"+belongs+"']").append($(this))
+	})
+</script>
