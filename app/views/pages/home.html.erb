@@ -31,20 +31,85 @@
 		color: #3c2d2d;
 		font-size: 20px;
 	}
+	
+	.cult > a {
+		display: block;
+	}
+
+	.cult:hover > a {
+		color: #0056B3 !important;
+		text-decoration: none;
+		/*border-left: 4px solid #000;*/
+		/*padding-left: 6px;*/
+		cursor: pointer;
+	}
+
+	.deets-container {
+		display: none;
+	}
+
+	/**/
+	.cult-deets {
+		margin: 20px 0;
+	    display: none;
+	    background: #100101;
+	    border-radius: 10px;
+	    color: #fff;
+	    border-left: 2px solid #ccc;
+	    display: flex;
+	}
+
+	.dtls {
+		flex: 1 1 25%;
+		border-left: 2px solid #FEEDD9;
+		padding: 20px;
+	}
+
+	/**/
+	.deets-container .title {
+		color: #fff;
+	}
+
+	.deets-container h3 {
+		border-bottom: 4px solid #a21717;
+    	padding: 10px;
+	}
+
+	.deets-container .triggers {
+		background: #670c0c;
+	}
+
+	.deets-container .triggers-title {
+		background: #d01c1c;
+	}
+
+	.key {
+		position: relative;
+	}
+	
+	.fa-expand {
+		margin-left: 10px;
+	}
+
 </style>
 
 <h2 class="text-center">
 	The approval of any cult is the approval of "<u>cults</u>" in general.
 </h2>
+
+<div class="key">
 <hr>
 
-A.P. = Years After the Prophet
+
+<div class="btn btn-danger ap-guide">A.P. = Years After the Prophet</div>
+
 <hr>
+</div>
 
 <ul>
 	<% Cult.all.order("release_date ASC").each do |c| %>
 		<li class="cult" data-id="<%= c.id %>" data-belongs="<%= c.cult_id %>">
-			<a href="/cults/<%= c.id %>" target="_blank">
+			<span class="expand-cult">
 			
 				<span class="title">
 					<%= c.title %> 
@@ -56,8 +121,60 @@ A.P. = Years After the Prophet
 								<%= c.release_date - 632 %> 
 								<span class="ap">A.P.</span>
 							</span>
+							<i class="fa fa-expand"></i>
 					<% end %>
-			</a>
+			</span>
+			
+			<section class="deets-container">
+				<div class="cult-deets">
+					<div class="dtls">
+						<h3><i class="fa fa-user"></i> Gods:</h3>
+						<ul>
+							<% c.figures.try(:each) do |t| %>
+						      <li>
+						        <span class="title">
+						          <%= t["title"] %>
+						        </span>
+						        <!--  -->
+						        <div class="body">
+						          <%= t["body"] %>
+						        </div>
+						      </li>
+						    <% end %>
+						</ul>
+					</div>
+
+					<div class="dtls">
+						<h3><i class="fa fa-book"></i> Scriptures:</h3>
+						<ul>
+							<% c.scriptures.try(:each) do |t| %>
+						      <li>
+						        <span class="title">
+						          <%= t["title"] %>
+						        </span>
+						        <!--  -->
+						        <div class="body">
+						          <%= t["body"] %>
+						        </div>
+						      </li>
+						    <% end %>
+						</ul>
+					</div>
+					<div class="dtls">
+						<h3><i class="fa fa-university"></i> Jargon:</h3>
+						<ul>
+							
+						</ul>
+					</div>
+					<div class="dtls triggers">
+						<h3 class="triggers-title"><i class="fa fa-warning"></i>  Triggers:</h3>
+						<ul>
+							
+						</ul>
+					</div>
+				</div>
+			</section>
+			
 		</li>
 	<% end %>
 </ul>
@@ -69,4 +186,11 @@ A.P. = Years After the Prophet
 		belongs = $(this).attr("data-belongs")
 		$(".cult[data-id='"+belongs+"']").append($(this))
 	})
+
+	// 
+	$("body").on("click", ".expand-cult", function(){
+		li = $(this).closest(".cult")
+		li.find('> .deets-container').toggle()
+	})
+
 </script>

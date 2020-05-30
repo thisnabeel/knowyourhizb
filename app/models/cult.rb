@@ -3,4 +3,6 @@ class Cult < ActiveRecord::Base
 	belongs_to :cult
 	serialize :technical_terms
 	serialize :scriptures
+	serialize :triggers
+	serialize :figures
 end

@@ -23,14 +23,36 @@
 <hr>
 
 <p>
-  <h2>Technical Terms:</h2>
-  <ul class="terms-list">
-    <% @cult.technical_terms.try(:each) do |t| %>
+  <h2>Prophets/Gods:</h2>
+  <ul class="figures-list">
+    <% @cult.figures.try(:each_with_index) do |t, index| %>
       <li>
         <span class="title">
           <%= t["title"] %>
         </span>
-        <i class="fa fa-times remove"></i>
+        <i class="fa fa-times remove" data-key="figures" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
+        <!--  -->
+        <div class="body">
+          <%= t["body"] %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <input type="text" class="form-control figures-form">
+  <i class="fa fa-plus add-figures-form"></i>
+</p>
+
+<hr>
+
+<p>
+  <h2>Technical Terms:</h2>
+  <ul class="terms-list">
+    <% @cult.technical_terms.try(:each_with_index) do |t, index| %>
+      <li>
+        <span class="title">
+          <%= t["title"] %>
+        </span>
+        <i class="fa fa-times remove" data-key="technical_terms" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
         <!--  -->
         <div class="body">
           <%= t["body"] %>
@@ -48,12 +70,12 @@
 <p>
   <h2>Scriptures:</h2>
   <ul class="scriptures-list">
-    <% @cult.scriptures.try(:each) do |t| %>
+    <% @cult.scriptures.try(:each_with_index) do |t, index| %>
       <li>
         <span class="title">
           <%= t["title"] %>
         </span>
-        <i class="fa fa-times remove"></i>
+        <i class="fa fa-times remove" data-key="figures" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
         <!--  -->
         <div class="body">
           <%= t["body"] %>
@@ -63,6 +85,28 @@
   </ul>
   <input type="text" class="form-control s-form">
   <i class="fa fa-plus add-s-form"></i>
+</p>
+
+<hr>
+
+<p>
+  <h2>Triggers:</h2>
+  <ul class="triggers-list">
+    <% @cult.triggers.try(:each_with_index) do |t, index| %>
+      <li>
+        <span class="title">
+          <%= t["title"] %>
+        </span>
+        <i class="fa fa-times remove" data-key="triggers" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
+        <!--  -->
+        <div class="body">
+          <%= t["body"] %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <input type="text" class="form-control trigger-form">
+  <i class="fa fa-plus add-trigger-form"></i>
 </p>
 
 <hr>
@@ -191,8 +235,127 @@
       })
   })
 
+
+// 
+  $(".add-trigger-form").on("click", function(){
+      
+      title = $(".trigger-form").val();
+      body = "";
+
+      $(".triggers-list").append(`
+        <li>
+          <span class="title">`+title+`</span>
+          <div class="body">`+body+`</div>
+        </li>
+      `)
+
+      $(".trigger-form").val("");
+
+      triggers = []
+      $(".triggers-list li").each(function(){
+        triggers.push({
+          title: $(this).find(".title").html(),
+          body: $(this).find(".body").html(),
+        })
+      })
+
+      console.log(triggers)
+
+      $.ajax({
+         type: "PUT",
+         dataType: "json",
+         url: '/cults/<%= @cult.id %>',
+         contentType: 'application/json',
+         data: JSON.stringify({ 
+            triggers: triggers,
+            _method:'post' 
+         }),
+         success: function(res){
+          console.log(res)
+          // Location.reload()
+          location = location
+         }
+      })
+  })
+
+// 
+// 
+  $(".add-figures-form").on("click", function(){
+      
+      title = $(".figures-form").val();
+      body = "";
+
+      $(".figures-list").append(`
+        <li>
+          <span class="title">`+title+`</span>
+          <div class="body">`+body+`</div>
+        </li>
+      `)
+
+      $(".trigger-form").val("");
+
+      figures = []
+      $(".figures-list li").each(function(){
+        figures.push({
+          title: $(this).find(".title").html(),
+          body: $(this).find(".body").html(),
+        })
+      })
+
+      console.log(figures)
+
+      $.ajax({
+         type: "PUT",
+         dataType: "json",
+         url: '/cults/<%= @cult.id %>',
+         contentType: 'application/json',
+         data: JSON.stringify({ 
+            figures: figures,
+            _method:'post' 
+         }),
+         success: function(res){
+          console.log(res)
+          // Location.reload()
+          location = location
+         }
+      })
+  })
+
+
   $(".remove").on("click", function(index, item){
+
+
+
+    id = $(this).attr("data-id")
+    ul = $(this).closest("ul")
+
     $(this).closest("li").remove()
+
+    list = []
+    
+    ul.find("li").each(function(){
+      list.push({
+        title: $(this).find(".title").text(),
+        body: $(this).find(".body").html()
+      })
+    })
+
+    data = {}
+    data["figures"] = list
+    data["_method"] = "post"
+
+
+    $.ajax({
+        type: "PUT",
+        dataType: "json",
+        url: '/cults/'+id,
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(res){
+          console.log(res)
+        }
+    })
+
   })
 
 </script>
