@@ -91,6 +91,35 @@
 		margin-left: 10px;
 	}
 
+	/**/
+	.adder {
+		display: flex;
+	}
+
+	.adder input {
+		flex: 1 1 80%;
+	}
+
+	.adder .fa {
+		flex: 1 1 20%;
+	}
+
+	/**/
+	.dtls li {
+		position: relative;
+	}
+	.dtls li .remove-li {
+		left: -34px;
+    	top: 6px;
+    	position: absolute;
+	}
+
+	<% if !admin_signed_in? %>
+		.remove-li {
+			display: none;
+		}
+	<% end %>
+
 </style>
 
 <h2 class="text-center">
@@ -127,50 +156,84 @@
 			
 			<section class="deets-container">
 				<div class="cult-deets">
-					<div class="dtls">
+					<div class="dtls" key="figures">
 						<h3><i class="fa fa-user"></i> Prophets:</h3>
 						<ul>
 							<% c.figures.try(:each) do |t| %>
 						      <li>
-						        <span class="title">
-						          <%= t["title"] %>
-						        </span>
+						      	<div class="fa fa-times remove-li"></div>
+						        <span class="title"><%= t["title"] %></span>
 						        <!--  -->
-						        <div class="body">
-						          <%= t["body"] %>
-						        </div>
+						        <div class="body"><%= t["body"] %></div>
 						      </li>
 						    <% end %>
 						</ul>
+
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
 					</div>
 
-					<div class="dtls">
+					<div class="dtls" key="scriptures">
 						<h3><i class="fa fa-book"></i> Scriptures:</h3>
 						<ul>
 							<% c.scriptures.try(:each) do |t| %>
 						      <li>
-						        <span class="title">
-						          <%= t["title"] %>
-						        </span>
+								<div class="fa fa-times remove-li"></div>
+						        <span class="title"><%= t["title"] %></span>
 						        <!--  -->
-						        <div class="body">
-						          <%= t["body"] %>
-						        </div>
+						        <div class="body"><%= t["body"] %></div>
 						      </li>
 						    <% end %>
 						</ul>
+
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
 					</div>
-					<div class="dtls">
+					<div class="dtls" key="jargon">
 						<h3><i class="fa fa-university"></i> Jargon:</h3>
 						<ul>
 							
 						</ul>
+						
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
+
 					</div>
-					<div class="dtls triggers">
+					<div class="dtls triggers" key="triggers">
 						<h3 class="triggers-title"><i class="fa fa-warning"></i>  Triggers:</h3>
 						<ul>
-							
+							<% c.triggers.try(:each) do |t| %>
+						      <li>
+								<div class="fa fa-times remove-li"></div>
+						        <span class="title"><%= t["title"] %></span>
+						        <!--  -->
+						        <div class="body"><%= t["body"] %></div>
+						      </li>
+						    <% end %>
 						</ul>
+
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
 					</div>
 				</div>
 			</section>
@@ -192,5 +255,100 @@
 		li = $(this).closest(".cult")
 		li.find('> .deets-container').toggle()
 	})
+
+	<% if admin_signed_in? %>
+
+	// 
+	$("body").on("click", ".adder .fa-plus", function(){
+		
+		id = $(this).closest(".cult").attr("data-id")
+		
+		dtls = $(this).closest(".dtls")
+		
+		key = dtls.attr("key")
+
+		ul = dtls.find("ul")
+		val = dtls.find("input").val()
+		console.log(val)
+		
+
+		array = []
+		ul.find("li").each(function(){
+			array.push({
+				title: $(this).find(".title").html(),
+				body: $(this).find(".body").html(),
+			})
+		})
+
+		array.push({
+			title: val,
+			body: ""
+		})
+		
+		hash = {}
+		hash[key] = array
+		hash["_method"] = "post"
+
+
+		$.ajax({
+		    type: "PUT",
+		    dataType: "json",
+		    url: '/cults/'+id,
+		    contentType: 'application/json',
+		    data: JSON.stringify(hash),
+		    success: function(res){
+		      console.log(res)
+		        ul.append(`<li>
+		        	<div class="fa fa-times remove-li"></div>
+			        <span class="title">
+			          `+val+`
+			        </span>
+			        <div class="body">
+			        </div>
+			      </li>`)
+				dtls.find("input").val("")
+		    }
+		})
+
+	})
+
+	// 
+	$("body").on("click", ".remove-li", function(){
+		id = $(this).closest(".cult").attr("data-id")
+		dtls = $(this).closest(".dtls")
+		key = dtls.attr("key")
+		ul = dtls.find("ul")
+
+		$(this).closest("li").remove()
+
+		array = []
+		ul.find("li").each(function(){
+			array.push({
+				title: $(this).find(".title").html(),
+				body: $(this).find(".body").html(),
+			})
+		})
+		
+		hash = {}
+		hash[key] = array
+		hash["_method"] = "post"
+
+
+		$.ajax({
+		    type: "PUT",
+		    dataType: "json",
+		    url: '/cults/'+id,
+		    contentType: 'application/json',
+		    data: JSON.stringify(hash),
+		    success: function(res){
+		      console.log(res)
+		    }
+		})
+
+	})
+
+	<% end %>
+
+
 
 </script>
