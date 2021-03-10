@@ -120,131 +120,67 @@
 		}
 	<% end %>
 
+.toggle-nav {
+	display: flex;
+	text-align: center;
+	font-size: 34px;
+}
+
+.toggle-nav > span {
+	flex: 1 1 50%;
+	padding: 30px;
+}
+
+.active-nav {
+	background: #000;
+	color: #fff;
+}
+
+.toggle-views [toggle="timeline"] {
+	display: none;
+}
+
 </style>
 
 <h2 class="text-center">
 	The approval of any cult is the approval of "<u>cults</u>" in general.
 </h2>
 
-<div class="key">
-<hr>
-
-
-<div class="btn btn-danger ap-guide">A.P. = Years After the Prophet</div>
-
-<hr>
-</div>
-
-<ul>
-	<% Cult.all.order("release_date ASC").each do |c| %>
-		<li class="cult" data-id="<%= c.id %>" data-belongs="<%= c.cult_id %>">
-			<span class="expand-cult">
-			
-				<span class="title">
-					<%= c.title %> 
-				</span>
-					<% if c.release_date.present? %> 
-						~ <%= c.release_date %> 
-							<span class="ce">C.E.</span> 
-							<span class="after-prophet">
-								<%= c.release_date - 632 %> 
-								<span class="ap">A.P.</span>
-							</span>
-							<i class="fa fa-expand"></i>
-					<% end %>
-			</span>
-			
-			<section class="deets-container">
-				<div class="cult-deets">
-					<div class="dtls" key="figures">
-						<h3><i class="fa fa-user"></i> Prophets:</h3>
-						<ul>
-							<% c.figures.try(:each) do |t| %>
-						      <li>
-						      	<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
-						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
-						      </li>
-						    <% end %>
-						</ul>
-
-						<% if admin_signed_in? %>
-							<hr>
-							<div class="adder">
-								<input type="text" class="form-control">
-								<div class="btn btn-info fa fa-plus"></div>
-							</div>
-						<% end %>
-					</div>
-
-					<div class="dtls" key="scriptures">
-						<h3><i class="fa fa-book"></i> Scriptures:</h3>
-						<ul>
-							<% c.scriptures.try(:each) do |t| %>
-						      <li>
-								<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
-						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
-						      </li>
-						    <% end %>
-						</ul>
-
-						<% if admin_signed_in? %>
-							<hr>
-							<div class="adder">
-								<input type="text" class="form-control">
-								<div class="btn btn-info fa fa-plus"></div>
-							</div>
-						<% end %>
-					</div>
-					<div class="dtls" key="jargon">
-						<h3><i class="fa fa-university"></i> Jargon:</h3>
-						<ul>
-							
-						</ul>
-						
-						<% if admin_signed_in? %>
-							<hr>
-							<div class="adder">
-								<input type="text" class="form-control">
-								<div class="btn btn-info fa fa-plus"></div>
-							</div>
-						<% end %>
-
-					</div>
-					<div class="dtls triggers" key="triggers">
-						<h3 class="triggers-title"><i class="fa fa-warning"></i>  Triggers:</h3>
-						<ul>
-							<% c.triggers.try(:each) do |t| %>
-						      <li>
-								<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
-						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
-						      </li>
-						    <% end %>
-						</ul>
-
-						<% if admin_signed_in? %>
-							<hr>
-							<div class="adder">
-								<input type="text" class="form-control">
-								<div class="btn btn-info fa fa-plus"></div>
-							</div>
-						<% end %>
-					</div>
-				</div>
-			</section>
-			
-		</li>
-	<% end %>
-</ul>
-
 <br>
 
+<div class="toggle-nav">
+	<span toggle="nested" class="active-nav">Nested</span>
+	<span toggle="timeline">Timeline</span>
+	
+</div>
+<br>
+
+<div class="toggle-views">
+
+	<section toggle="nested">
+		<%= render "pages/nested" %>
+	</section>
+
+	<section toggle="timeline">
+		<%= render "pages/timeline" %>
+	</section>
+
+
+</div>
+
+<br>
+<br>
+
+
 <script>
+
+	$("body").on("click", ".toggle-nav span", function(){
+		toggle = $(this).attr("toggle");
+		$(".toggle-views [toggle='"+toggle+"']").show().siblings().hide()
+		$(this).addClass("active-nav").siblings().removeClass("active-nav")
+	})
+
+
 	$(".cult").each(function(){
 		belongs = $(this).attr("data-belongs")
 		$(".cult[data-id='"+belongs+"']").append($(this))

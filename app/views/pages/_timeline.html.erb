@@ -1,0 +1,32 @@
+<section id="timeline">
+
+	<br>
+	<header class="text-center">
+	<h3>Current Year: 2021</h3>
+	</header>
+	<br><br>
+
+    <div class="timeline-area">
+	    <div class="container">
+		<div class="all-timelines">
+            <% Cult.all.order("release_date DESC").each do |cult| %>
+			<!--SINGLE TIMELINE-->
+			<div class="single-timeline d-flex-2">
+				<div class="timeline-blank"></div>
+				<div class="timeline-text d-flex-2">
+					<span>
+						<h4><%= cult.title %></h4>
+                        ~ <%= cult.release_date %> 
+                        <span class="ce">C.E.</span> 
+                        <span class="after-prophet">
+                            <%= cult.release_date - 632 %> 
+                            <span class="ap">A.P.</span>
+                        </span>
+					</span>
+					<div class="t-square"></div>
+				</div>
+			</div>
+            <% end %>
+		</div>
+	</div>
+</section>

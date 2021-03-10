@@ -1,0 +1,106 @@
+<ul>
+	<% Cult.all.order("release_date ASC").each do |c| %>
+		<li class="cult" data-id="<%= c.id %>" data-belongs="<%= c.cult_id %>">
+			<span class="expand-cult">
+			
+				<span class="title">
+					<%= c.title %> 
+				</span>
+					<% if c.release_date.present? %> 
+						~ <%= c.release_date %> 
+							<span class="ce">C.E.</span> 
+							<span class="after-prophet">
+								<%= c.release_date - 632 %> 
+								<span class="ap">A.P.</span>
+							</span>
+							<i class="fa fa-expand"></i>
+					<% end %>
+			</span>
+			
+			<section class="deets-container">
+				<div class="cult-deets">
+					<div class="dtls" key="figures">
+						<h3><i class="fa fa-user"></i> Prophets:</h3>
+						<ul>
+							<% c.figures.try(:each) do |t| %>
+						      <li>
+						      	<div class="fa fa-times remove-li"></div>
+						        <span class="title"><%= t["title"] %></span>
+						        <!--  -->
+						        <div class="body"><%= t["body"] %></div>
+						      </li>
+						    <% end %>
+						</ul>
+
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
+					</div>
+
+					<div class="dtls" key="scriptures">
+						<h3><i class="fa fa-book"></i> Scriptures:</h3>
+						<ul>
+							<% c.scriptures.try(:each) do |t| %>
+						      <li>
+								<div class="fa fa-times remove-li"></div>
+						        <span class="title"><%= t["title"] %></span>
+						        <!--  -->
+						        <div class="body"><%= t["body"] %></div>
+						      </li>
+						    <% end %>
+						</ul>
+
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
+					</div>
+					<div class="dtls" key="technical_terms">
+						<h3><i class="fa fa-university"></i> Jargon:</h3>
+						<ul>
+							
+						</ul>
+						
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
+
+					</div>
+					<div class="dtls triggers" key="triggers">
+						<h3 class="triggers-title"><i class="fa fa-warning"></i>  Triggers:</h3>
+						<ul>
+							<% c.triggers.try(:each) do |t| %>
+						      <li>
+								<div class="fa fa-times remove-li"></div>
+						        <span class="title"><%= t["title"] %></span>
+						        <!--  -->
+						        <div class="body"><%= t["body"] %></div>
+						      </li>
+						    <% end %>
+						</ul>
+
+						<% if admin_signed_in? %>
+							<hr>
+							<div class="adder">
+								<input type="text" class="form-control">
+								<div class="btn btn-info fa fa-plus"></div>
+							</div>
+						<% end %>
+					</div>
+				</div>
+			</section>
+			
+		</li>
+	<% end %>
+</ul>
