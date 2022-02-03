@@ -1,0 +1,176 @@
+<style>
+
+  #essayModal {
+
+  }
+
+  #essayModal .modal-content {
+    border-radius: 0;
+    background: #10100f;
+    color: #fff2df;
+  }
+
+  #essayModal .modal-body {
+
+  }
+
+  #essay-content {
+    padding: 60px 140px;
+    padding-top: 40px;
+
+    background: #fff;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 24px 24px -18px rgba(69,104,129,.33), 0 9px 45px 0 rgba(114,119,160,.12);
+    box-shadow: 0 24px 24px -18px rgba(69,104,129,.33), 0 9px 45px 0 rgba(114,119,160,.12);
+    padding: 70px 50px;
+    font-size: 16px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  #essay-content {
+    background: #072031;
+  }
+
+  .blue-page {
+    border-radius: 10px;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 70px 60px;
+    margin-bottom: 20px;
+  }
+
+  .blue-page {
+    background: #0d273a;
+  }
+
+
+  .fr-quick-insert {
+    display: none;
+  }
+
+  /**/
+  #essay-by {
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  #essay-parent {
+    text-decoration: underline;
+    color: #ff6aff;
+  }
+
+  .thesis-holder {
+    padding: 40px 40px 0px 60px;
+  }
+
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="essayModal" tabindex="-1" role="dialog" aria-labelledby="essayModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    
+    <div class="modal-content">
+        <div class="thesis-holder">
+          <h2></h2>
+        </div>
+      <div class="modal-body">
+        <div class="blue-page">
+
+          <div id="essay-content">
+          
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+    $("body").on("click", "[modal] li", function(){
+        $("#essayModal").modal("show");
+        $(".thesis-holder h2").html($(this).find("span").html())
+        essayModal(
+            $(this).attr("data-id"), 
+            $(this).closest("[modal]").attr("modal"),
+            $(this).index()
+        )
+    })
+    
+
+
+  function essayModal(id, type, index){
+
+    // $("#essay-content").html(data["body"])
+    $.getJSON( "/cults/"+id, function( data ) {
+        console.log(data)
+    });
+
+    if ( 
+      $("body").attr("admin-id")
+    ){
+
+      $( "#essay-thesis" ).prop( "disabled", false );
+
+      
+
+      new FroalaEditor('#essay-content', {
+        toolbarInline: true,
+        charCounterCount: false,
+        tabSpaces: 4,
+        saveInterval: 750,
+
+        events: {
+          'save.before': function () {
+            // Before save request is made.
+            console.log(this);
+            html = $("#essay-content .fr-view").html()
+
+          $.ajax({
+              type: "PUT",
+              dataType: "json",
+              url: '/cults/'+id,
+              contentType: 'application/json',
+              data: JSON.stringify({ 
+                figures: html,
+                _method:'post' 
+              }),
+              success: function(res){
+                console.log(res)
+                $.notify("Saved!", "success");
+              }
+          })
+
+          },
+
+          'save.after': function () {
+            // After successfully save request.
+          },
+
+          'save.error': function () {
+            // Do something here.
+          }
+        }
+      })
+
+    } else {
+      
+      $( "#essay-thesis" ).prop( "disabled", true );
+
+    }
+
+    $("#essayModal").modal("show")
+
+  }
+
+  //
+  $('#essayModal').on('hidden.bs.modal', function () {
+    // do something…
+    var editor = new FroalaEditor('#essay-content')
+    editor.destroy()
+  })
+
+</script>

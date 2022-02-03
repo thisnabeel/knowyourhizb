@@ -22,15 +22,13 @@
 			
 			<section class="deets-container">
 				<div class="cult-deets">
-					<div class="dtls" key="figures">
+					<div class="dtls" key="figures" modal='figures'>
 						<h3><i class="fa fa-user"></i> Prophets:</h3>
 						<ul>
-							<% c.figures.try(:each) do |t| %>
+							<% c.figures.each do |t| %>
 						      <li>
 						      	<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
-						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
+						        <span class="title" data-id="<%= t.id %>"><%= t.title %></span>
 						      </li>
 						    <% end %>
 						</ul>
@@ -44,15 +42,14 @@
 						<% end %>
 					</div>
 
-					<div class="dtls" key="scriptures">
+					<div class="dtls" key="scriptures" modal='scriptures'>
 						<h3><i class="fa fa-book"></i> Scriptures:</h3>
 						<ul>
-							<% c.scriptures.try(:each) do |t| %>
+							<% c.scriptures.each do |t| %>
 						      <li>
 								<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
+						        <span class="title"  data-id="<%= t.id %>"><%= t.title %></span>
 						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
 						      </li>
 						    <% end %>
 						</ul>
@@ -65,15 +62,14 @@
 							</div>
 						<% end %>
 					</div>
-					<div class="dtls" key="technical_terms">
+					<div class="dtls" key="terms" modal='terms'>
 						<h3><i class="fa fa-university"></i> Jargon:</h3>
 						<ul>
-							<% c.technical_terms.try(:each) do |t| %>
+							<% c.terms.each do |t| %>
 						      <li>
 								<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
+						        <span class="title" data-id="<%= t.id %>"><%= t.title %></span>
 						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
 						      </li>
 						    <% end %>
 						</ul>
@@ -87,15 +83,14 @@
 						<% end %>
 
 					</div>
-					<div class="dtls triggers" key="triggers">
+					<div class="dtls triggers" key="triggers" modal='triggers'>
 						<h3 class="triggers-title"><i class="fa fa-warning"></i>  Triggers:</h3>
 						<ul>
-							<% c.triggers.try(:each) do |t| %>
+							<% c.triggers.each do |t| %>
 						      <li>
 								<div class="fa fa-times remove-li"></div>
-						        <span class="title"><%= t["title"] %></span>
+						        <span class="title" data-id="<%= t.id %>"><%= t.title %></span>
 						        <!--  -->
-						        <div class="body"><%= t["body"] %></div>
 						      </li>
 						    <% end %>
 						</ul>

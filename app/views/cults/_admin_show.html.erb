@@ -24,10 +24,10 @@
 
 <p>
   <h2>Prophets/Gods:</h2>
-  <ul class="figures-list">
+  <ul class="figures-list" modal='figures'>
     <% @cult.figures.try(:each_with_index) do |t, index| %>
       <li>
-        <span class="title">
+        <span class="title" data-id="<%= t.id %>">
           <%= t["title"] %>
         </span>
         <i class="fa fa-times remove" data-key="figures" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
@@ -46,10 +46,10 @@
 
 <p>
   <h2>Technical Terms:</h2>
-  <ul class="terms-list">
+  <ul class="terms-list" modal='terms'>
     <% @cult.technical_terms.try(:each_with_index) do |t, index| %>
       <li>
-        <span class="title">
+        <span class="title" data-id="<%= t.id %>">
           <%= t["title"] %>
         </span>
         <i class="fa fa-times remove" data-key="technical_terms" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
@@ -69,10 +69,10 @@
 
 <p>
   <h2>Scriptures:</h2>
-  <ul class="scriptures-list">
+  <ul class="scriptures-list" modal='scriptures'>
     <% @cult.scriptures.try(:each_with_index) do |t, index| %>
       <li>
-        <span class="title">
+        <span class="title" data-id="<%= t.id %>">
           <%= t["title"] %>
         </span>
         <i class="fa fa-times remove" data-key="figures" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
@@ -91,10 +91,10 @@
 
 <p>
   <h2>Triggers:</h2>
-  <ul class="triggers-list">
+  <ul class="triggers-list" modal='triggers'>
     <% @cult.triggers.try(:each_with_index) do |t, index| %>
       <li>
-        <span class="title">
+        <span class="title" data-id="<%= t.id %>">
           <%= t["title"] %>
         </span>
         <i class="fa fa-times remove" data-key="triggers" data-id="<%= @cult.id %>" data-index="<%= index %>"></i>
