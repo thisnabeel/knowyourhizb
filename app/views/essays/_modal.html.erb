@@ -90,32 +90,29 @@
 
 <script>
 
-    $("body").on("click", "[modal] li", function(){
+    $("body").on("click", "[modal] li span", function(){
         $("#essayModal").modal("show");
-        $(".thesis-holder h2").html($(this).find("span").html())
+        $(".thesis-holder h2").html($(this).html())
         essayModal(
             $(this).attr("data-id"), 
             $(this).closest("[modal]").attr("modal"),
-            $(this).index()
         )
     })
     
 
 
-  function essayModal(id, type, index){
+  function essayModal(id, type){
 
-    // $("#essay-content").html(data["body"])
-    $.getJSON( "/cults/"+id, function( data ) {
+    $.getJSON( `/${type}/${id}`, function( data ) {
         console.log(data)
+        $("#essay-content").html(data["body"])
     });
 
     if ( 
       $("body").attr("admin-id")
     ){
 
-      $( "#essay-thesis" ).prop( "disabled", false );
-
-      
+      $( "#essay-thesis" ).prop( "disabled", false );      
 
       new FroalaEditor('#essay-content', {
         toolbarInline: true,
@@ -132,10 +129,10 @@
           $.ajax({
               type: "PUT",
               dataType: "json",
-              url: '/cults/'+id,
+              url: `/${type}/${id}`,
               contentType: 'application/json',
               data: JSON.stringify({ 
-                figures: html,
+                body: html,
                 _method:'post' 
               }),
               success: function(res){
