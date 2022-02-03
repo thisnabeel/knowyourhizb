@@ -7,7 +7,6 @@ class Cult < ActiveRecord::Base
 	serialize :figures
 
 	def self.rehash
-		ActiveRecord::Base.connection.table_exists? 'scriptures'
 		Cult.all.each do |c|
 			c.figures.try(:each) do |f|
 				Figure.find_or_create_by(title: f["title"].strip, cult_id: c.id)
