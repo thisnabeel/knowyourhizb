@@ -1,10 +1,10 @@
 class Cult < ActiveRecord::Base
 	has_many :cults
 	belongs_to :cult
-	serialize :technical_terms
-	serialize :scriptures
-	serialize :triggers
-	serialize :figures
+	has_many :terms
+	has_many :scriptures
+	has_many :triggers
+	has_many :figures
 
 	def self.rehash
 		Cult.all.each do |c|
