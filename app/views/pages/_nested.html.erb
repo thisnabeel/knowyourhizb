@@ -26,9 +26,9 @@
 						<h3><i class="fa fa-user"></i> Prophets:</h3>
 						<ul>
 							<% c.figures.each do |t| %>
-						      <li>
+						      <li data-id="<%= t.id %>">
 						      	<div class="fa fa-times remove-li"></div>
-						        <span class="title" data-id="<%= t.id %>"><%= t.title %></span>
+						        <span class="title"><%= t.title %></span>
 						      </li>
 						    <% end %>
 						</ul>
@@ -46,9 +46,9 @@
 						<h3><i class="fa fa-book"></i> Scriptures:</h3>
 						<ul>
 							<% c.scriptures.each do |t| %>
-						      <li>
+						      <li data-id="<%= t.id %>">
 								<div class="fa fa-times remove-li"></div>
-						        <span class="title"  data-id="<%= t.id %>"><%= t.title %></span>
+						        <span class="title" ><%= t.title %></span>
 						        <!--  -->
 						      </li>
 						    <% end %>
@@ -66,9 +66,9 @@
 						<h3><i class="fa fa-university"></i> Jargon:</h3>
 						<ul>
 							<% c.terms.each do |t| %>
-						      <li>
+						      <li data-id="<%= t.id %>">
 								<div class="fa fa-times remove-li"></div>
-						        <span class="title" data-id="<%= t.id %>"><%= t.title %></span>
+						        <span class="title"><%= t.title %></span>
 						        <!--  -->
 						      </li>
 						    <% end %>
@@ -87,9 +87,9 @@
 						<h3 class="triggers-title"><i class="fa fa-warning"></i>  Triggers:</h3>
 						<ul>
 							<% c.triggers.each do |t| %>
-						      <li>
+						      <li data-id="<%= t.id %>">
 								<div class="fa fa-times remove-li"></div>
-						        <span class="title" data-id="<%= t.id %>"><%= t.title %></span>
+						        <span class="title"><%= t.title %></span>
 						        <!--  -->
 						      </li>
 						    <% end %>

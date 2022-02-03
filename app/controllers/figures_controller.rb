@@ -69,6 +69,6 @@ class FiguresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def figure_params
-      params.require(:figure).permit(:title, :body, :position)
+      params.require(:figure).permit!
     end
 end

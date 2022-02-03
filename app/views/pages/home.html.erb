@@ -196,45 +196,27 @@
 
 	// 
 	$("body").on("click", ".adder .fa-plus", function(){
-		
-		id = $(this).closest(".cult").attr("data-id")
-		
+		cult_id = $(this).closest(".cult").attr("data-id")
 		dtls = $(this).closest(".dtls")
-		
-		key = dtls.attr("key")
-
-		ul = dtls.find("ul")
+		key = dtls.attr("modal")
+		li = $(this).closest("li")
 		val = dtls.find("input").val()
-		console.log(val)
-		
+		ul = dtls.find("ul")
 
-		array = []
-		ul.find("li").each(function(){
-			array.push({
-				title: $(this).find(".title").html(),
-				body: $(this).find(".body").html(),
-			})
-		})
-
-		array.push({
-			title: val,
-			body: ""
-		})
-		
 		hash = {}
-		hash[key] = array
+		hash["title"] = val
+		hash["cult_id"] = cult_id
 		hash["_method"] = "post"
 
-
 		$.ajax({
-		    type: "PUT",
+		    type: "POST",
 		    dataType: "json",
-		    url: '/cults/'+id,
+		    url: `/${key}`,
 		    contentType: 'application/json',
 		    data: JSON.stringify(hash),
 		    success: function(res){
 		      console.log(res)
-		        ul.append(`<li>
+		        ul.append(`<li data-id="${res["id"]}">
 		        	<div class="fa fa-times remove-li"></div>
 			        <span class="title">
 			          `+val+`
@@ -250,37 +232,23 @@
 
 	// 
 	$("body").on("click", ".remove-li", function(){
-		id = $(this).closest(".cult").attr("data-id")
 		dtls = $(this).closest(".dtls")
-		key = dtls.attr("key")
-		ul = dtls.find("ul")
-
-		$(this).closest("li").remove()
-
-		array = []
-		ul.find("li").each(function(){
-			array.push({
-				title: $(this).find(".title").html(),
-				body: $(this).find(".body").html(),
-			})
-		})
-		
-		hash = {}
-		hash[key] = array
-		hash["_method"] = "post"
-
+		key = dtls.attr("modal")
+		li = $(this).closest("li")
+		id = li.attr("data-id")
 
 		$.ajax({
-		    type: "PUT",
-		    dataType: "json",
-		    url: '/cults/'+id,
-		    contentType: 'application/json',
-		    data: JSON.stringify(hash),
-		    success: function(res){
-		      console.log(res)
-		    }
+			type: "DELETE",
+			dataType: "json",
+			url: `/${key}/${id}`,
+			contentType: 'application/json',
+			data: JSON.stringify({ 
+				_method:'post' 
+			}),
+			success: function(){
+				li.remove()
+			}
 		})
-
 	})
 
 	<% end %>
