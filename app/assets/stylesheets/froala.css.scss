@@ -1,14 +1,24 @@
-@import 'plugins/char_counter.min.css';
-@import 'plugins/code_view.min.css';
-@import 'plugins/colors.min.css';
-@import 'plugins/emoticons.min.css';
-@import 'plugins/file.min.css';
-@import 'plugins/fullscreen.min.css';
-@import 'plugins/help.min.css';
-@import 'plugins/image_manager.min.css';
-@import 'plugins/image.min.css';
-@import 'plugins/line_breaker.min.css';
-@import 'plugins/quick_insert.min.css';
-@import 'plugins/special_characters.min.css';
-@import 'plugins/table.min.css';
-@import 'plugins/video.min.css';
+/*
+*= require froala_editor.min.css
+*= require froala_style.min.css
+*= require plugins/char_counter.min.css
+*= require plugins/colors.min.css
+*= require plugins/emoticons.min.css
+*= require plugins/file.min.css
+*= require plugins/fullscreen.min.css
+*= require plugins/image_manager.min.css
+*= require plugins/image.min.css
+*= require plugins/line_breaker.min.css
+*= require plugins/quick_insert.min.css
+*= require plugins/table.min.css
+*= require plugins/video.min.css
+*/
+
+div.fr-wrapper > div > a {
+  /* display: none !important; */
+  /* position: fixed; */
+  /* z-index: -99999 !important; */
+  font-size: 0px !important;
+  padding: 0px !important;
+  height: 0px !important;
+}

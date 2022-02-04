@@ -94,7 +94,7 @@
         $("#essayModal").modal("show");
         $(".thesis-holder h2").html($(this).html())
         essayModal(
-            $(this).attr("data-id"), 
+            $(this).closest("li").attr("data-id"), 
             $(this).closest("[modal]").attr("modal"),
         )
     })
@@ -102,72 +102,65 @@
 
 
   function essayModal(id, type){
-
+    
     $.getJSON( `/${type}/${id}`, function( data ) {
         console.log(data)
         $("#essay-content").html(data["body"])
-    });
 
-    if ( 
-      $("body").attr("admin-id")
-    ){
+        if ( 
+        $("body").attr("admin-id")
+        ){
 
-      $( "#essay-thesis" ).prop( "disabled", false );      
+        
+            $("#essay-content").froalaEditor({
+                toolbarInline: true,
+                charCounterCount: false,
+                toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'color', 'emoticons', '-', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'indent', 'outdent', '-', 'insertImage', 'insertLink', 'insertFile', 'insertVideo', 'undo', 'redo'],
+                saveInterval: 500
+            })
+            .on('froalaEditor.save.before', function (e, editor) {
+                // Before save request is made.
+                html = $("#essay-content .fr-view").html()
 
-      new FroalaEditor('#essay-content', {
-        toolbarInline: true,
-        charCounterCount: false,
-        tabSpaces: 4,
-        saveInterval: 750,
+                $.ajax({
+                    type: "PUT",
+                    dataType: "json",
+                    url: `/${type}/${id}`,
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 
+                        body: html,
+                        _method:'post' 
+                    }),
+                    success: function(res){
+                        console.log(res)
+                        // $.notify("Saved!", "success");
+                    }
+                })
+            })
+            .on('froalaEditor.save.after', function (e, editor, response) {
+                // After successfully save request.
+            })
+            .on('froalaEditor.save.error', function (e, editor, error) {
+                // Do something here.
+            });
 
-        events: {
-          'save.before': function () {
-            // Before save request is made.
-            console.log(this);
-            html = $("#essay-content .fr-view").html()
+        } else {
+        
+        $( "#essay-thesis" ).prop( "disabled", true );
 
-          $.ajax({
-              type: "PUT",
-              dataType: "json",
-              url: `/${type}/${id}`,
-              contentType: 'application/json',
-              data: JSON.stringify({ 
-                body: html,
-                _method:'post' 
-              }),
-              success: function(res){
-                console.log(res)
-                $.notify("Saved!", "success");
-              }
-          })
-
-          },
-
-          'save.after': function () {
-            // After successfully save request.
-          },
-
-          'save.error': function () {
-            // Do something here.
-          }
         }
-      })
 
-    } else {
-      
-      $( "#essay-thesis" ).prop( "disabled", true );
-
-    }
-
-    $("#essayModal").modal("show")
+        $("#essayModal").modal("show")
+    })
 
   }
 
   //
   $('#essayModal').on('hidden.bs.modal', function () {
     // do something…
-    var editor = new FroalaEditor('#essay-content')
-    editor.destroy()
+    // var editor = new FroalaEditor('#essay-content')
+    // editor.destroy()
+    $("#essay-content").froalaEditor("destroy")
   })
 
 </script>

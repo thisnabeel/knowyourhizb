@@ -13,6 +13,7 @@
 //= require plugins/image.min.js
 //= require plugins/image_manager.min.js
 //= require plugins/inline_style.min.js
+//= require plugins/inline_class.min.js
 //= require plugins/line_breaker.min.js
 //= require plugins/link.min.js
 //= require plugins/lists.min.js
