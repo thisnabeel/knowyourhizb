@@ -14,7 +14,7 @@ class Cult < ActiveRecord::Base
 
   	def self.all_cached
         return Rails.cache.fetch('cults') {
-            Cult.all.to_json( :include => [:cults])
+            Cult.all.order("release_date ASC").to_json( :include => [:cults])
         }
 	end
 

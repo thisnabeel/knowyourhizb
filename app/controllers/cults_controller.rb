@@ -9,7 +9,7 @@ class CultsController < ApplicationController
   end
 
   def cached
-    @chapters = Cult.all
+    @chapters = Cult.all.order("release_date ASC")
     render json: @chapters
   end
 
