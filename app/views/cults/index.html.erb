@@ -214,6 +214,9 @@
     border: 3px dashed #ff8a8a;
   }
 
+  .hidden {
+    display: none;
+  }
 
 </style>
 
@@ -281,7 +284,7 @@
           <li class="chapter" data-id="`+item["id"]+`" data-code="`+item["code"]+`" data-belongs="`+item["cult_id"]+`" data-position="`+item["position"]+`">
             
             <div class="chapter-head `+mom+`">
-              <span>
+              <span class="hidden">
                 <i class="btn btn-warning fa fa-file-alt show-btn" data-id="`+item["id"]+`"></i>
               </span>
               <span class="chapter-title">`+item["title"]+`</span>
