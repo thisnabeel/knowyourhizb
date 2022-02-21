@@ -1,0 +1,86 @@
+<style>
+	
+</style>
+
+<div id="adder">
+	
+    <div class="input-group">
+        <input type="text" id="cult-title" class="form-control input-sm" placeholder="Enter Cult Name...">
+        <input type="text" id="cult-year" class="form-control input-sm" placeholder="Enter Cult Year...">
+    </div>
+
+	<div class="btn btn-primary add-chapter">Add Cult</div>
+</div>
+
+<script>
+	$("body").on("click", ".add-chapter", function(){
+		title = $("#cult-title")
+        year = $("#cult-year")
+
+		if ( $(".highlighted").length ){
+			parent_id = $(".highlighted").attr("data-id")
+		} else {
+			parent_id = "<%= @chapter.present? ? @chapter.id : 'null' %>"
+		}
+		
+		console.log(parent_id)
+
+		if (title.val().length > 1 && year.val().length > 1) {
+
+			$.ajax({
+			    type: "POST",
+			    dataType: "json",
+			    url: '/cults',
+			    contentType: 'application/json',
+			    data: JSON.stringify({ 
+                  title: title.val(),
+                  release_date: year.val(),
+			      chapter_id: parent_id,
+			      _method:'post' 
+			    }),
+			    success: function(res){
+			     console.log(res)
+			     chapter = res
+			     $(".chapter-list").append(`
+				      <li class="chapter" data-id="`+chapter["id"]+`" data-code="`+chapter["code"]+`" data-belongs="`+chapter["chapter_id"]+`">
+				        
+				        <div class="chapter-head">
+				          <span>
+				            <i class="btn btn-warning fa fa-file-alt show-btn" data-id="`+chapter["id"]+`"></i>
+				          </span>
+				          <span class="chapter-title">`+chapter["title"]+`</span>
+				          <span class="edit-title">
+				            <i class="fa fa-pen"></i>
+				            <span class="btn btn-info save-title">Save</span>
+				            <span class="btn btn-danger remove-title">
+				              Delete Chapter?
+				            </span>
+				          </span>
+				        </div>
+
+
+				      </li>
+			     `)
+
+
+				 refreshChaptersOrder()
+				 debug()
+
+			    }
+			})
+			
+			input.val("")
+		}
+
+
+	})
+
+	$("body").on("click", ".chapter-head .show-btn", function(){
+		li = $(this).closest("li")
+		code = li.attr("data-id")
+		 window.open( 
+              "/chapters/"+code, "_blank");
+	})
+
+
+</script>

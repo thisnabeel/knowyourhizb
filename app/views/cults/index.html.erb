@@ -1,35 +1,438 @@
-<p id="notice"><%= notice %></p>
+<style>
 
-<h1>Listing Cults</h1>
+  #web-wrapper {
+    max-width: 90vw;
+    margin: 0 auto;
+  }
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Release date</th>
-      <th>Leading figure</th>
-      <th>Technical terms</th>
-      <th>Cult</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  .side-navs {
+    display: none;
+  }
 
-  <tbody>
-    <% @cults.each do |cult| %>
-      <tr>
-        <td><%= cult.title %></td>
-        <td><%= cult.release_date %></td>
-        <td><%= cult.leading_figure %></td>
-        <td><%= cult.technical_terms %></td>
-        <td><%= cult.cult_id %></td>
-        <td><%= link_to 'Show', cult %></td>
-        <td><%= link_to 'Edit', edit_cult_path(cult) %></td>
-        <td><%= link_to 'Destroy', cult, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  .map-jumbotron {
+    margin-top: 30px;
+    border: 1px solid #0e0e0e;
+  }
 
-<br>
+  .chapter-list {
+    list-style: none;
+    padding: 0;
+  }
 
-<%= link_to 'New Cult', new_cult_path %>
+  .chapter-list .chapter-head {
+    /*color: #000;*/
+    font-size: 34px;
+    font-family: 'GreycliffCF-ExtraBold';
+  }
+
+  li.chapter.selected .chapter-head {
+      color: #67ff8e;
+  }
+
+  .chapter-search input {
+    width: 100%;
+    font-size: 48px;
+    padding: 24px;
+
+  }
+
+  .fa-info-circle {
+    color: #3178ff;
+  }
+
+  .chapter-description {
+    /*display: none;*/
+    /*color: #58d4e3;*/
+  }
+
+  .selected .color-green {
+    color: #6eff92;
+  }
+
+  .concept {
+    background: #a3f2fc;
+      color: #000;
+      padding: 20px;
+  }
+
+  .lang-concept {
+    padding: 20px;
+  }
+
+  .just-like li {
+    padding: 14px;
+      background: #ccc;
+      display: inline-block;
+      border-radius: 8px;
+      font-size: 24px;
+      margin-right: 12px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      color: black;
+  }
+
+  .selected .just-like li {
+    background: #67ff8e;
+  }
+
+  table.hidden {
+    display: none;
+  }
+
+  .chapter.highlighted {
+    background-color: #00a8ff;
+  }
+
+  .highlighted .chapter-head {
+    color: #000;
+  }
+
+  .chapter > .chapter {
+      margin-left: 40px;
+      border-left: none;
+      padding-left: none;
+      margin-bottom: 0; 
+  }
+
+  .chapter {
+    border-left: 12px #ffeaa7 solid;
+    padding-left: 12px;
+    margin-bottom: 10px;
+    /* color: #fff; */
+  }
+
+  .save-title {
+    display: none;
+    background: #46b8da !important;
+    border-color: #46b8da !important;
+  }
+
+  .remove-title {
+    display: none;
+  }
+
+  .chapter-head {
+    position: relative;
+  }
+
+  .chapter-visibility {
+    display: none;
+  }
+  
+  /**/
+  .chapter-head .chapter-visibility .fa-eye-slash  {
+    display: none;
+  }
+  .chapter-head .chapter-visibility .fa-eye  {
+    display: block;
+  }
+  /**/
+  .chapter-head.chapter-hidden .chapter-visibility .fa-eye-slash  {
+    display: block;
+  }
+  .chapter-head.chapter-hidden .chapter-visibility .fa-eye  {
+    display: none;
+  }
+
+  .chapter-visibility {
+    position: absolute;
+    left: -60px;
+    top: 15px;
+  }
+
+  .highlighted > .chapter-head .chapter-visibility {
+    display: block;
+  }
+
+  .highlighted > .chapter-hidden {
+    color: #ccc;
+  }
+
+  .chapter-list .chapter-hidden {
+    color: #ccc;
+  }
+
+  .chapter .show-chapter {
+    position: absolute;
+    display: none;
+    right: 4px;
+    top: 4px;
+    background: #fff;
+    padding: 5px 10px;
+  }
+
+  .chapter.highlighted .show-chapter {
+    display: block;
+  }
+
+/**/
+
+  .flex {
+    display: block;
+  }
+
+  .flex-1 {
+    width: 80vw;
+    padding: 10px;
+    height: 75vh;
+  }
+
+  .flex-2 {
+    flex: 1 1 50%;
+    padding: 10px;
+    height: auto !important;
+  }
+
+  .active-tab {
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    border-top: 2px solid #000;
+  }
+
+  .open-chapter:hover {
+    background: #eef2ff;
+  }
+
+  /**/
+
+  .flex > div {
+    overflow: scroll;
+    /*height: 75vh;*/
+  }
+
+  .chapter-list {
+    width: max-content;
+  }
+
+  .chapter-head {
+    width: max-content !important;
+  }
+
+/**/
+
+  .chapter-list > .chapter > .chapter-head {
+    border: 3px dashed #ff8a8a;
+  }
+
+
+</style>
+
+    <div class="jumbotron map-jumbotron">
+      <h1>Map <i class="fa fa-refresh recache"></i></h1>
+      <p>Controls:</p>
+      <ol>
+        <li>Use <b>Arrow keys</b> or <b>Click</b> to highlight elements.</li>
+        <li>Use <b>W S keys</b> to reposition highlighted elements.</li>
+        <li>Use <b>A D keys</b> to nest/de-nest highlighted elements.</li>
+      </ol>
+
+      <hr>
+      <small>New Chapter will be nested inside of the current Highlighted Skill</small>
+      <%= render "cults/mapper/adder" %>
+
+
+    </div>
+
+<div class="flex">
+
+
+
+  <div class="flex-1">
+
+    <ul class="chapter-list">
+    </ul>
+
+
+  </div>
+
+  <div class="flex-2">
+  </div>
+
+</div>
+
+
+
+<!--  -->
+
+<script>
+  // $(".chapter").first().addClass("highlighted")
+
+</script>
+
+<%= render "cults/mapper/controls" %>
+
+<script>
+
+  $.getJSON( "/cached_chapters", function( data ) {
+    console.log(data)
+    $.each(data, function(index, item){
+      $(".chapter-list").append(makeChapterItem(item))
+    })
+    refreshChaptersOrder()
+  });
+
+  function makeChapterItem(item){
+    mom = ``
+    
+    expand = ``
+
+
+    return `
+          <li class="chapter" data-id="`+item["id"]+`" data-code="`+item["code"]+`" data-belongs="`+item["cult_id"]+`" data-position="`+item["position"]+`">
+            
+            <div class="chapter-head `+mom+`">
+              <span>
+                <i class="btn btn-warning fa fa-file-alt show-btn" data-id="`+item["id"]+`"></i>
+              </span>
+              <span class="chapter-title">`+item["title"]+`</span>
+              <span class="edit-title">
+                <i class="fa fa-pen"></i>
+                <span class="btn btn-info save-title">Save</span>
+                <span class="btn btn-danger remove-title">
+                  Delete Skill?
+                </span>
+                <span class="chapter-visibility pull-right">
+                  <i class="fa fa-eye chapter-show"></i>
+                  <i class="fa fa-eye-slash chapter-hidden"></i>
+                </span>
+              </span>
+              
+              
+            </div>
+
+          </li>
+    `
+  }
+
+  function refreshChaptersOrder() {
+    $(".chapter").each(function(){
+      belongs = $(this).attr("data-belongs")
+
+      $(".chapter[data-id='"+belongs+"']").append($(this))
+    })
+  }
+
+  $("body").on("click", ".edit-title .fa-pen", function(){
+    $("body").addClass("editing-title")
+    cont = $(this).closest(".chapter")
+    
+    title_editor_toggle(cont)
+
+    title = cont.find("> .chapter-head > .chapter-title");
+    title.addClass('editable');
+    title.attr('contenteditable', 'true');  
+  })
+
+  $("body").on("click", ".edit-title .save-title", function(){
+
+    title = cont.find(".chapter-title");
+    val = title.html()
+
+    id = cont.attr("data-id")
+    code = cont.attr("data-code")
+    $.ajax({
+      type: "PUT",
+      dataType: "json",
+      url: '/chapters/' + id,
+      contentType: 'application/json',
+      data: JSON.stringify({ 
+        title: val,
+        _method:'post' 
+      }),
+      success: function(res){
+        console.log(res)
+        
+        title_editor_toggle(cont)
+
+        title.removeClass('editable');
+        title.attr('contenteditable', 'false');  
+
+        $(".editing-title").removeClass("editing-title")
+      }
+    })
+
+
+  })
+
+  function title_editor_toggle(cont){
+    cont.find("> .chapter-head .fa-pen").toggle();
+    cont.find("> .chapter-head .save-title").toggle();
+    cont.find("> .chapter-head .remove-title").toggle();
+  }
+
+  $("body").on("click", ".chapter-visibility", function(){
+    
+
+    post_title = $(this).closest(".chapter-head")
+    fa = $(this).find(".fa")
+
+    if ( post_title.hasClass("chapter-hidden") ) {
+      visibility = true
+    } else {
+      visibility = false
+    }
+
+
+
+  })
+
+  $("body").on("click", ".remove-title", function(){
+
+    // Parent li
+    li = $(this).closest("li")
+    
+    // Chapter Code
+    id = li.attr("data-id")
+    
+    // Ajax Delete Chapter
+    $.ajax({
+        type: "DELETE",
+        dataType: "json",
+        url: '/cults/'+id,
+        contentType: 'application/json',
+        data: JSON.stringify({ 
+          _method:'post' 
+        }),
+        success: function(){
+          // Remove li from DOM
+          li.remove()
+          $(".editing-title").removeClass("editing-title")
+        }
+    })
+
+
+  })
+
+
+
+  // $(".chapter").on("click", function(){
+  //   // $('.highlighted').removeClass("highlighted")
+  //   // $(this).addClass("highlighted")
+  //   editPostModal($(this).attr('data-id'))
+  // })
+
+// 
+  $("body").on("click", ".show-chapter", function(){
+    chaptersConfig($(this).attr("data-id"))
+    // $(".active-tab").removeClass("active-tab")
+    // $(this).addClass("active-tab")
+  })
+
+  $("body").on("click", ".recache", function(){
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: '/recache_chapters',
+        contentType: 'application/json',
+        data: JSON.stringify({ 
+          _method:'post' 
+        }),
+        success: function(res){
+          console.log(res)
+          window.location = window.location
+        }
+    })
+  })
+
+
+</script>

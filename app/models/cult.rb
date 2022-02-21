@@ -6,6 +6,32 @@ class Cult < ActiveRecord::Base
 	has_many :triggers
 	has_many :figures
 
+
+	after_commit :flush_cache
+
+	after_create :set_position
+
+
+  	def self.all_cached
+        return Rails.cache.fetch('cults') {
+            Cult.all.to_json( :include => [:cults])
+        }
+	end
+
+
+	def set_position
+		begin 
+			chapters_list = self.cults
+			if chapters_list.count > 1 && chapters_list.present?
+				self.update_attributes(position: chapters_list.count)
+			else
+				self.update_attributes(position: 1)
+			end
+		rescue
+		end
+	end
+	
+	
 	def self.rehash
 		Cult.all.each do |c|
 			c.figures.try(:each) do |f|
@@ -25,5 +51,16 @@ class Cult < ActiveRecord::Base
 			end
 		end
 	end
+
+	def self.recache
+		Rails.cache.delete('cults')
+	end
+
+	private
+        
+    def flush_cache
+        Rails.cache.delete('cults')
+    end
+
 	
 end

@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   get '/timeline' => "pages#timeline"
+
+  get '/cached_chapters' => "cults#cached"
+  post '/recache_chapters' => "cults#recache"
+
+  post "/config_cults" => "cults#config_cults"
   # You can have the root of your site routed with "root"
   root 'pages#home'
 

@@ -1,0 +1,184 @@
+
+
+<script>
+
+
+	$(document).keydown(function(e) {
+
+		console.log("hi")
+		
+		if ( 
+			 ( ($("#editChapterModal").data('bs.modal') || {})._isShown ) ||
+			 ($("#adder input").is(':focus')) ||
+			 ($("body").hasClass("editing-title")) || 
+			 ($("input").is(':focus')) ||
+			 ($("textarea").is(':focus'))
+		 ) {
+
+		} else {
+
+			if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        		e.preventDefault();
+    		}
+
+			col = $(".hovering").attr("data-column")
+			col = parseInt(col)
+
+			root_note = "D"
+		    switch(e.which) {
+		        
+				case 38: // up
+					index = $(".chapter.highlighted").index(".chapter")
+		        	el = $(".highlighted")
+					$(".chapter").eq(index - 1).addClass("highlighted")
+					el.removeClass("highlighted")
+		        break;
+
+		        case 40: // down
+		        	index = $(".chapter.highlighted").index(".chapter")
+		        	el = $(".highlighted")
+					$(".chapter").eq(index + 1).addClass("highlighted")
+					el.removeClass("highlighted")
+		        break;
+
+		        case 37: // left
+		        break;
+
+		        case 39: // right
+		        break;
+
+		        case 79:
+		        break;
+
+		        // 
+		        case 87: // "w"
+		        	e = $(".highlighted")
+		        	e.insertBefore(e.prev(".chapter"));
+
+		        	debug()
+		        break;
+				
+				//
+				case 83: // "s"
+					e = $(".highlighted")
+					e.insertAfter(e.next(".chapter"));
+
+					debug()
+		        break;
+
+		        //
+				case 68: // "D"
+					e = $(".highlighted")
+					prev = e.prev(".chapter")
+					prev.append(e)
+
+					debug()
+		        break;
+				
+				//
+		        case 65: // "A"
+					e = $(".highlighted")
+					prev = e.parent(".chapter")
+					
+					e.insertAfter(prev);
+
+					debug()
+
+		        break;
+				
+		        default: return; // exit this handler for other keys
+		    }
+
+		    changeChapter($(".chapter.highlighted").attr("data-id"))
+		}
+
+	});
+
+	$("body").on("click", ".chapter", function(e){
+		if (!e) var e = window.event;
+    	e.cancelBubble = true;
+    	if (e.stopPropagation) e.stopPropagation();
+		$(".highlighted").removeClass("highlighted")
+		$(this).addClass("highlighted")
+		changeChapter($(".chapter.highlighted").attr("data-id"))
+	})
+
+	$('body').trigger(jQuery.Event('keydown', { keycode:38, shiftKey: true }));
+	
+	var saveChaptersTimer;
+
+	function debug(){
+
+
+		clearTimeout(saveChaptersTimer);
+
+		saveChaptersTimer = setTimeout(function(){ 
+
+			array = []
+			$(".chapter").each(function(index, item){
+				
+				e = $(this)
+
+				// ~~~~~~~~~~~~~~
+				position = e.prevAll(".chapter").length + 1
+				e.attr("data-position", position)
+				// console.log(e.find(".chapter-title").html(), e.closest(".chapter").attr("data-id"))
+				if (e.parent(".chapter").length > 0) {
+					e.attr("data-belongs", e.parent(".chapter").attr("data-id"))
+				} else {
+					<% if @chapter.present? %>
+						e.attr("data-belongs", "<%= @chapter.id %>")
+					<% else %>
+						e.attr("data-belongs", "")
+					<% end %>
+				}
+				// ~~~~~~~~~~~~~~
+
+				id = e.attr("data-id")
+				belongs = e.attr("data-belongs")
+				position = e.attr("data-position")
+				title = e.find(".chapter-title").html()
+
+			    array.push({
+			    	id: parseInt(id),
+			    	position: parseInt(position),
+			    	belongs: parseInt(belongs),
+			    	title: title
+			    })	
+			})
+
+			console.log(array)
+
+			$.ajax({
+			    type: "POST",
+			    dataType: "json",
+			    url: '/config_cults',
+			    contentType: 'application/json',
+			    data: JSON.stringify({ 
+			      list: array,
+			      _method:'post' 
+			    }),
+			    success: function(res){
+			     console.log(res)
+			     	$.notify("Map Saved!", "success");
+			    }
+			})
+		// console.log(array)
+		})
+	}
+	
+	var showChapterTimer;
+	function changeChapter(id){
+		clearTimeout(showChapterTimer);
+
+		showChapterTimer = setTimeout(function(){ 
+
+		// $.getJSON( "/chapters/" + id, function( data ) {
+			
+		// 	});
+			
+
+		}, 500);
+	}
+
+</script>

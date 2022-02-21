@@ -8,6 +8,20 @@ class CultsController < ApplicationController
     @cults = Cult.all
   end
 
+  def cached
+    @chapters = Cult.all
+    render json: @chapters
+  end
+
+  def recache
+    Cult.recache
+    render status: 200, json: {
+      message: "Successful!",
+    }.to_json
+  end
+
+  def config_cults
+  end
   # GET /cults/1
   # GET /cults/1.json
   def show
@@ -60,6 +74,28 @@ class CultsController < ApplicationController
       format.html { redirect_to cults_url, notice: 'Cult was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def config_cults
+    # Get List Array
+    list = params[:list]
+
+    puts list
+
+    # Each Chapter
+    list.each do |t|
+    # Find Chapter
+    chapter = Cult.find(t["id"])
+    # chapter.update(chapter_id: nil)
+    chapter.update(
+      position: t["position"],
+      cult_id: t["belongs"],
+    ) 
+    end
+
+    render status: 200, json: {
+      message: "Successfully saved map!",
+    }.to_json
   end
 
   private
