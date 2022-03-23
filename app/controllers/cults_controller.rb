@@ -5,7 +5,7 @@ class CultsController < ApplicationController
   # GET /cults
   # GET /cults.json
   def index
-    @cults = Cult.all
+    @cults = Cult.all.order("release_date ASC")
   end
 
   def cached
