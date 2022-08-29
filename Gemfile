@@ -4,6 +4,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap'
 end
 
+ruby '2.5.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.8'
