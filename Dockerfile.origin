@@ -1,12 +1,16 @@
 # syntax=docker/dockerfile:1
 FROM ruby:2.5
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+
 WORKDIR /knowyourhizb
-COPY . /knowyourhizb/
-
-ENV BUNDLE_PATH /gems
-
+COPY Gemfile /knowyourhizb/Gemfile
+COPY Gemfile.lock /knowyourhizb/Gemfile.lock
 RUN bundle install
+
+
+# ENV BUNDLE_PATH /gems
+
+# RUN bundle install
 
 # Add a script to be executed every time the container starts.
 
