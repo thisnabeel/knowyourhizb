@@ -10,7 +10,7 @@
     <div class="timeline-area">
 	    <div class="container">
 		<div class="all-timelines">
-            <% Cult.all.order("release_date DESC").each do |cult| %>
+            <% @cults.each do |cult| %>
 			<!--SINGLE TIMELINE-->
 			<div class="single-timeline d-flex-2">
 				<div class="timeline-blank"></div>
