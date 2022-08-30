@@ -14,7 +14,7 @@ class Cult < ActiveRecord::Base
 
   	def self.all_cached
         return Rails.cache.fetch('cults') {
-            Cult.all.order("release_date ASC").includes(:cults)
+            Cult.all.order("release_date ASC").includes(:figures, :triggers, :scriptures, :terms)
         }
 	end
 
