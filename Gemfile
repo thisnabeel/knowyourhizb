@@ -41,6 +41,7 @@ gem 'devise'
 gem 'rails_12factor', group: :production
 
 gem 'pusher'
+gem 'rack-cors', :require => 'rack/cors'
 
 
 # Use ActiveModel has_secure_password
