@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   get '/timeline' => "pages#timeline"
 
+  get '/all_cached' => "cults#all_cached"
+
   get '/cached_chapters' => "cults#cached"
   post '/recache_chapters' => "cults#recache"
 

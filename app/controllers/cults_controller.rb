@@ -8,6 +8,10 @@ class CultsController < ApplicationController
     @cults = Cult.all.order("release_date ASC")
   end
 
+  def all_cached
+    @cults = Cult.all_cached
+  end
+
   def cached
     @chapters = Cult.all.order("release_date ASC")
     render json: @chapters
