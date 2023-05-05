@@ -10,6 +10,7 @@ class CultsController < ApplicationController
 
   def all_cached
     @cults = Cult.all_cached
+    render json: @cults
   end
 
   def cached
