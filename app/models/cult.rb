@@ -11,10 +11,33 @@ class Cult < ActiveRecord::Base
 
 	after_create :set_position
 
+	belongs_to :parent, class_name: "Cult", foreign_key: "cult_id"
+  	has_many :children, class_name: "Cult", foreign_key: "cult_id"
+	
+	def tree
+		current_cult = self
+		ancestry_path = [current_cult.title]
+
+		while current_cult.parent
+			current_cult = current_cult.parent
+			puts current_cult.title
+			ancestry_path.unshift(current_cult.title)
+		end
+
+		ancestry_path.reverse
+	end
+
 
   	def self.all_cached
         return Rails.cache.fetch('cults') {
-            Cult.all.order("release_date ASC").includes(:figures, :triggers, :scriptures, :terms)
+			Cult.all.order("release_date ASC").map {|c|
+				c.attributes.merge(
+					figures: c.figures,
+					terms: c.terms,
+					scriptures: c.scriptures,
+					triggers: c.triggers
+				)
+			}
         }
 	end
 
@@ -32,25 +55,25 @@ class Cult < ActiveRecord::Base
 	end
 	
 	
-	def self.rehash
-		Cult.all.each do |c|
-			c.figures.try(:each) do |f|
-				Figure.find_or_create_by(title: f["title"].strip, cult_id: c.id)
-			end
+	# def self.rehash
+	# 	Cult.all.each do |c|
+	# 		c.figures.try(:each) do |f|
+	# 			Figure.find_or_create_by(title: f["title"].strip, cult_id: c.id)
+	# 		end
 
-			c.scriptures.try(:each) do |f|
-				Scripture.find_or_create_by(title: f["title"].strip, cult_id: c.id)
-			end
+	# 		c.scriptures.try(:each) do |f|
+	# 			Scripture.find_or_create_by(title: f["title"].strip, cult_id: c.id)
+	# 		end
 
-			c.technical_terms.try(:each) do |f|
-				Term.find_or_create_by(title: f["title"].strip, cult_id: c.id)
-			end
+	# 		c.technical_terms.try(:each) do |f|
+	# 			Term.find_or_create_by(title: f["title"].strip, cult_id: c.id)
+	# 		end
 
-			c.triggers.try(:each) do |f|
-				Trigger.find_or_create_by(title: f["title"].strip, cult_id: c.id)
-			end
-		end
-	end
+	# 		c.triggers.try(:each) do |f|
+	# 			Trigger.find_or_create_by(title: f["title"].strip, cult_id: c.id)
+	# 		end
+	# 	end
+	# end
 
 	def self.recache
 		Rails.cache.delete('cults')

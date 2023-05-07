@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   resources :scriptures
   resources :triggers
   resources :terms
@@ -7,6 +8,10 @@ Rails.application.routes.draw do
   resources :cults
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
 
   get '/timeline' => "pages#timeline"
 
