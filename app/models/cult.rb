@@ -15,18 +15,43 @@ class Cult < ActiveRecord::Base
   	has_many :children, class_name: "Cult", foreign_key: "cult_id"
 	
 	def tree
-		current_cult = self
-		ancestry_path = [current_cult.title]
+		Rails.cache.fetch([self, "tree"]) do
+			current_cult = self
+			ancestry_path = [current_cult.title]
 
-		while current_cult.parent
+			while current_cult.parent
 			current_cult = current_cult.parent
-			puts current_cult.title
 			ancestry_path.unshift(current_cult.title)
-		end
+			end
 
-		ancestry_path.reverse
+			ancestry_path.reverse
+		end
 	end
 
+	def self.reverse_breadcrumbs
+		cults = Cult.all
+		cults_by_id = cults.index_by { |c| c[:id] }
+
+		# Next, build a hash to hold the reversed traversals
+		traversals = {}
+
+		# Iterate over each cult and build its reversed traversal
+		cults.each do |cult|
+			traversal = []
+			current_cult = cults_by_id[cult[:id]]
+
+			# Traverse up the ancestry chain until we reach the root
+			while current_cult
+				traversal << current_cult.title
+				current_cult = cults_by_id[current_cult[:cult_id]]
+			end
+
+			# Add the reversed traversal to the hash, keyed by the cult's id
+			traversals[cult[:id]] = traversal
+		end
+
+		traversals
+	end
 
   	def self.all_cached
         return Rails.cache.fetch('cults') {
@@ -85,6 +110,8 @@ class Cult < ActiveRecord::Base
     def flush_cache
         Rails.cache.delete('cults')
     end
+
+
 
 	
 end

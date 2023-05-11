@@ -5,11 +5,15 @@ class CultsController < ApplicationController
   # GET /cults
   # GET /cults.json
   def index
-    @cults = Cult.all.order("release_date ASC")
+    @cults = Cult.includes(:figures, :scriptures, :terms, :triggers).all.order("release_date ASC")
+  end
+
+  def breadcrumbs
+    render json: Cult.reverse_breadcrumbs
   end
 
   def all_cached
-    @cults = Cult.all_cached
+    @cults = Cult.all.order("release_date ASC")
     render json: @cults
   end
 

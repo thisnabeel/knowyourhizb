@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     sessions: 'users/sessions'
   }
 
+  get "/breadcrumbs" => "cults#breadcrumbs"
+
   get '/timeline' => "pages#timeline"
 
   get '/all_cached' => "cults#all_cached"

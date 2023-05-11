@@ -3,4 +3,4 @@ json.figures cult.figures
 json.scriptures cult.scriptures
 json.terms cult.terms
 json.triggers cult.triggers
-json.url cult_url(cult, format: :json)
+# json.url cult_url(cult, format: :json)

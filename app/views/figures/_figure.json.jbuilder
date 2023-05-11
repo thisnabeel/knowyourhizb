@@ -1,3 +1,2 @@
-json.extract! figure, :id, :title, :body, :position, :created_at, :updated_at
-json.tree figure.try(:cult).try(:tree) 
-json.url figure_url(figure, format: :json)
+json.extract! figure, :id, :title, :body, :position, :cult_id
+# json.url figure_url(figure, format: :json)
