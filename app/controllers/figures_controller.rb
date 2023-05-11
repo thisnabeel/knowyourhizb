@@ -5,7 +5,6 @@ class FiguresController < ApplicationController
   # GET /figures.json
   def index
     @figures = Figure.all
-    
   end
 
   # GET /figures/1
