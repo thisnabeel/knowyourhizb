@@ -1,5 +1,5 @@
 class NarrationsSerializer < ActiveModel::Serializer
-  attributes :id, :narrators, :annotated_arabic, :arabic
+  attributes :id, :narrators, :annotated_arabic, :arabic, :english
   attributes :chapter, :book
   def narrators
     if object.narrator_narrations
