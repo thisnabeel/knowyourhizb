@@ -1,6 +1,7 @@
 class HadithBookSerializer < ActiveModel::Serializer
   attributes :id, :hadith_chapters, :narrations
   attributes :collection
+  attributes :title
 
   def chapters
     object.hadith_chapters.order("position ASC")
