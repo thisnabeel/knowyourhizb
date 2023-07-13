@@ -81,7 +81,7 @@ class NarrationsController < ApplicationController
     respond_to do |format|
       if @narration.update(narration_params)
         format.html { redirect_to @narration, notice: 'Narration was successfully updated.' }
-        format.json { render json: @narration }
+        format.json { render json: NarrationsSerializer.new(@narration) }
       else
         format.html { render :edit }
         format.json { render json: @narration.errors, status: :unprocessable_entity }
