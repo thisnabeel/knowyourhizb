@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230712094208) do
+ActiveRecord::Schema.define(version: 20230716003411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,17 @@ ActiveRecord::Schema.define(version: 20230712094208) do
 
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
+
+  create_table "conclusions", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "position"
+    t.integer  "narration_id"
+    t.integer  "signal"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "conclusions", ["narration_id"], name: "index_conclusions_on_narration_id", using: :btree
 
   create_table "cults", force: :cascade do |t|
     t.string   "title"
@@ -88,7 +99,6 @@ ActiveRecord::Schema.define(version: 20230712094208) do
     t.integer "hadith_book_id"
     t.string  "chain"
     t.text    "notes"
-    t.text    "conclusions"
   end
 
   add_index "narrations", ["hadith_chapter_id"], name: "index_narrations_on_hadith_chapter_id", using: :btree
@@ -179,4 +189,5 @@ ActiveRecord::Schema.define(version: 20230712094208) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "conclusions", "narrations"
 end

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :conclusions
   resources :scriptures
   resources :triggers
   resources :terms

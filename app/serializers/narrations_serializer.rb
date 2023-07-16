@@ -1,9 +1,19 @@
 class NarrationsSerializer < ActiveModel::Serializer
   attributes :id, :narrators, :annotated_arabic, :arabic, :english
-  attributes :chapter, :book
+  attributes :chapter, :book, :conclusions
+
+
+  def options
+    instance_options[:serializer_options]
+  end
+
   def narrators
-    if object.narrator_narrations
-      return object.narrator_narrations.where(language: "arabic").order("position ASC")
+    if options && options[:show_full]
+      if object.narrator_narrations
+        return object.narrator_narrations.where(language: "arabic").order("position ASC")
+      else
+        return []
+      end
     else
       return []
     end
@@ -17,6 +27,14 @@ class NarrationsSerializer < ActiveModel::Serializer
     object.hadith_book
   end
 
+  def conclusions
+    if options && options[:show_full]
+      object.conclusions.order("position ASC")
+    else
+      return []
+    end
+  end
+  
   def collection
     object.hadith_book.hadith_collection
   end

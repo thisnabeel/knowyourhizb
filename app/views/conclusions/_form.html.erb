@@ -1,0 +1,33 @@
+<%= form_for(@conclusion) do |f| %>
+  <% if @conclusion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@conclusion.errors.count, "error") %> prohibited this conclusion from being saved:</h2>
+
+      <ul>
+      <% @conclusion.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </div>
+  <div class="field">
+    <%= f.label :position %><br>
+    <%= f.number_field :position %>
+  </div>
+  <div class="field">
+    <%= f.label :narration_id %><br>
+    <%= f.text_field :narration_id %>
+  </div>
+  <div class="field">
+    <%= f.label :signal %><br>
+    <%= f.number_field :signal %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

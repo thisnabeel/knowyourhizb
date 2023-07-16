@@ -11,7 +11,10 @@ class NarrationsController < ApplicationController
   # GET /narrations/1
   # GET /narrations/1.json
   def show
-    render json: @narration
+    render json: @narration, serializer: NarrationsSerializer, serializer_options: { 
+      show_full: true
+    }
+
   end
 
   # GET /narrations/new

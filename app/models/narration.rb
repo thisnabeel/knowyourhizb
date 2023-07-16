@@ -6,7 +6,7 @@ class Narration < ActiveRecord::Base
 	has_many :narrator_narrations
 
 
-	serialize :conclusions
+	has_many :conclusions
 
 	def reset_narration
 		self.update(annotated_arabic: nil)

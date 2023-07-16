@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Conclusions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Body</th>
+      <th>Position</th>
+      <th>Narration</th>
+      <th>Signal</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @conclusions.each do |conclusion| %>
+      <tr>
+        <td><%= conclusion.body %></td>
+        <td><%= conclusion.position %></td>
+        <td><%= conclusion.narration %></td>
+        <td><%= conclusion.signal %></td>
+        <td><%= link_to 'Show', conclusion %></td>
+        <td><%= link_to 'Edit', edit_conclusion_path(conclusion) %></td>
+        <td><%= link_to 'Destroy', conclusion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Conclusion', new_conclusion_path %>

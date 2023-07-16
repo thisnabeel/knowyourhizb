@@ -13,7 +13,10 @@ class HadithBookSerializer < ActiveModel::Serializer
 
   def narrations  
     ActiveModel::Serializer::CollectionSerializer.new(
-      object.narrations.order("position ASC"), serializer: NarrationsSerializer)
+      object.narrations.order("position ASC"), serializer: NarrationsSerializer, 
+      serializer_options: {
+        show_full: false
+      })
   end
   
 end

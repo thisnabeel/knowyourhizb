@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @conclusion.body %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @conclusion.position %>
+</p>
+
+<p>
+  <strong>Narration:</strong>
+  <%= @conclusion.narration %>
+</p>
+
+<p>
+  <strong>Signal:</strong>
+  <%= @conclusion.signal %>
+</p>
+
+<%= link_to 'Edit', edit_conclusion_path(@conclusion) %> |
+<%= link_to 'Back', conclusions_path %>
