@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-  	array = ["farhanmshaikh@hotmail.com", "rockystorm@gmail.com"]
+  	array = ["farhanmshaikh1@gmail.com", "rockystorm@gmail.com"]
   	bool = false
   	array.each do |a|
 	  	if self.email.include? a
@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     if !user.present?
       bool = false
     else
-      array = ["farhanmshaikh@hotmail.com", "rockystorm@gmail.com"]
+      array = ["farhanmshaikh1@gmail.com", "rockystorm@gmail.com"]
       bool = false
       array.each do |a|
         if user.email.include? a
