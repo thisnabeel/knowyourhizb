@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230716003411) do
+ActiveRecord::Schema.define(version: 20230815012604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,24 @@ ActiveRecord::Schema.define(version: 20230716003411) do
 
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
+
+  create_table "chapters", force: :cascade do |t|
+    t.string   "title"
+    t.string   "image"
+    t.text     "body"
+    t.text     "description"
+    t.integer  "difficulty"
+    t.integer  "position"
+    t.integer  "chapter_id",  limit: 8
+    t.boolean  "visibility"
+    t.string   "code"
+    t.string   "slug"
+    t.boolean  "is_course"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "chapters", ["chapter_id"], name: "index_chapters_on_chapter_id", using: :btree
 
   create_table "conclusions", force: :cascade do |t|
     t.text     "body"
@@ -143,6 +161,18 @@ ActiveRecord::Schema.define(version: 20230716003411) do
     t.string   "death_reason"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "pieces", force: :cascade do |t|
+    t.string   "recording_url"
+    t.string   "video_url"
+    t.text     "translation"
+    t.text     "content"
+    t.integer  "chapter_id",    limit: 8
+    t.integer  "uuid"
+    t.integer  "position"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "scriptures", force: :cascade do |t|

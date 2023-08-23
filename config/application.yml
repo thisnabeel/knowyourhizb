@@ -1,1 +1,4 @@
 DATABASE_URL: postgresql://postgres:NewKabuto56..!@db.uioootlkxjhrpsdrojmj.supabase.co:5432/postgres
+AWS_REGION: "us-east-2"
+AWS_ACCESS_KEY_ID: "AKIAYBCTT2R32JBDBANN"
+AWS_SECRET_ACCESS_KEY: "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"

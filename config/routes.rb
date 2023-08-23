@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :pieces
   resources :conclusions
   resources :scriptures
   resources :triggers
   resources :terms
   resources :figures
+  resources :chapters
   devise_for :admins
   resources :cults
   # The priority is based upon order of creation: first created -> highest priority.
