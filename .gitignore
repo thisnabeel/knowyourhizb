@@ -13,3 +13,5 @@
 /tmp
 
 /.github
+
+/config/application.yml
