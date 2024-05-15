@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @fiqh_case.title %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @fiqh_case.position %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @fiqh_case.description %>
+</p>
+
+<p>
+  <strong>Fiqh case:</strong>
+  <%= @fiqh_case.fiqh_case %>
+</p>
+
+<%= link_to 'Edit', edit_fiqh_case_path(@fiqh_case) %> |
+<%= link_to 'Back', fiqh_cases_path %>

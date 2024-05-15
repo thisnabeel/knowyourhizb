@@ -1,0 +1,2 @@
+module FiqhPrinciplesHelper
+end

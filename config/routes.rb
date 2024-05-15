@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :fiqh_case_principles
+  resources :fiqh_principles do
+    collection do
+      post 'search', to: 'fiqh_principles#search'
+    end
+  end
+  
+  resources :fiqh_cases
+  resources :fiqh_cases
   resources :pieces
   resources :conclusions
   resources :scriptures

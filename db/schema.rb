@@ -11,17 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230815012604) do
+ActiveRecord::Schema.define(version: 20240423002439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pgsodium"
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
-  enable_extension "pgjwt"
   enable_extension "uuid-ossp"
-  enable_extension "pg_graphql"
-  enable_extension "supabase_vault"
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -83,6 +79,35 @@ ActiveRecord::Schema.define(version: 20230815012604) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "year"
+  end
+
+  create_table "fiqh_case_principles", force: :cascade do |t|
+    t.boolean  "passing"
+    t.integer  "fiqh_principle_id"
+    t.integer  "fiqh_case_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "fiqh_case_principles", ["fiqh_case_id"], name: "index_fiqh_case_principles_on_fiqh_case_id", using: :btree
+  add_index "fiqh_case_principles", ["fiqh_principle_id"], name: "index_fiqh_case_principles_on_fiqh_principle_id", using: :btree
+
+  create_table "fiqh_cases", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "position"
+    t.text     "description"
+    t.integer  "fiqh_case_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "fiqh_cases", ["fiqh_case_id"], name: "index_fiqh_cases_on_fiqh_case_id", using: :btree
+
+  create_table "fiqh_principles", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "hadith_books", force: :cascade do |t|
@@ -220,4 +245,7 @@ ActiveRecord::Schema.define(version: 20230815012604) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "conclusions", "narrations"
+  add_foreign_key "fiqh_case_principles", "fiqh_cases"
+  add_foreign_key "fiqh_case_principles", "fiqh_principles"
+  add_foreign_key "fiqh_cases", "fiqh_cases"
 end

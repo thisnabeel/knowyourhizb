@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  position: 1
+  description: MyText
+  fiqh_case_id: 
+
+two:
+  title: MyString
+  position: 1
+  description: MyText
+  fiqh_case_id: 

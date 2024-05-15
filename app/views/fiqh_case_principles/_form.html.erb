@@ -1,0 +1,29 @@
+<%= form_for(@fiqh_case_principle) do |f| %>
+  <% if @fiqh_case_principle.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@fiqh_case_principle.errors.count, "error") %> prohibited this fiqh_case_principle from being saved:</h2>
+
+      <ul>
+      <% @fiqh_case_principle.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :passing %><br>
+    <%= f.check_box :passing %>
+  </div>
+  <div class="field">
+    <%= f.label :fiqh_principle_id %><br>
+    <%= f.text_field :fiqh_principle_id %>
+  </div>
+  <div class="field">
+    <%= f.label :fiqh_case_id %><br>
+    <%= f.text_field :fiqh_case_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

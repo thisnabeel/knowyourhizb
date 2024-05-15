@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Passing:</strong>
+  <%= @fiqh_case_principle.passing %>
+</p>
+
+<p>
+  <strong>Fiqh principle:</strong>
+  <%= @fiqh_case_principle.fiqh_principle %>
+</p>
+
+<p>
+  <strong>Fiqh case:</strong>
+  <%= @fiqh_case_principle.fiqh_case %>
+</p>
+
+<%= link_to 'Edit', edit_fiqh_case_principle_path(@fiqh_case_principle) %> |
+<%= link_to 'Back', fiqh_case_principles_path %>

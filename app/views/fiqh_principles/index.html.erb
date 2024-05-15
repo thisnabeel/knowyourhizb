@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Fiqh Principles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fiqh_principles.each do |fiqh_principle| %>
+      <tr>
+        <td><%= fiqh_principle.title %></td>
+        <td><%= fiqh_principle.description %></td>
+        <td><%= link_to 'Show', fiqh_principle %></td>
+        <td><%= link_to 'Edit', edit_fiqh_principle_path(fiqh_principle) %></td>
+        <td><%= link_to 'Destroy', fiqh_principle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Fiqh principle', new_fiqh_principle_path %>
