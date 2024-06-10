@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20240423002439) do
+ActiveRecord::Schema.define(version: 20240603171450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,31 @@ ActiveRecord::Schema.define(version: 20240423002439) do
     t.string "author"
   end
 
+  create_table "line_translations", force: :cascade do |t|
+    t.integer  "line_id"
+    t.string   "language"
+    t.string   "content"
+    t.text     "content_explanation"
+    t.text     "grammar_explanation"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "line_translations", ["line_id"], name: "index_line_translations_on_line_id", using: :btree
+
+  create_table "lines", force: :cascade do |t|
+    t.integer  "chapter_id"
+    t.string   "font_style"
+    t.text     "content"
+    t.string   "direction"
+    t.integer  "position"
+    t.string   "recording_url"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "lines", ["chapter_id"], name: "index_lines_on_chapter_id", using: :btree
+
   create_table "narrations", force: :cascade do |t|
     t.integer "position"
     t.integer "hadith_chapter_id"
@@ -248,4 +273,6 @@ ActiveRecord::Schema.define(version: 20240423002439) do
   add_foreign_key "fiqh_case_principles", "fiqh_cases"
   add_foreign_key "fiqh_case_principles", "fiqh_principles"
   add_foreign_key "fiqh_cases", "fiqh_cases"
+  add_foreign_key "line_translations", "lines"
+  add_foreign_key "lines", "chapters"
 end

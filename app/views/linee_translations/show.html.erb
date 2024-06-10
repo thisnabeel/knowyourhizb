@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @linee_translation.belongs_to %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @linee_translation.language %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @linee_translation.content %>
+</p>
+
+<p>
+  <strong>Content explanation:</strong>
+  <%= @linee_translation.content_explanation %>
+</p>
+
+<p>
+  <strong>Grammar explanation:</strong>
+  <%= @linee_translation.grammar_explanation %>
+</p>
+
+<%= link_to 'Edit', edit_linee_translation_path(@linee_translation) %> |
+<%= link_to 'Back', linee_translations_path %>

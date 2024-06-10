@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Linees</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Belongs to</th>
+      <th>Font style</th>
+      <th>Content</th>
+      <th>Direction</th>
+      <th>Position</th>
+      <th>Recording url</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @linees.each do |linee| %>
+      <tr>
+        <td><%= linee.belongs_to %></td>
+        <td><%= linee.font_style %></td>
+        <td><%= linee.content %></td>
+        <td><%= linee.direction %></td>
+        <td><%= linee.position %></td>
+        <td><%= linee.recording_url %></td>
+        <td><%= link_to 'Show', linee %></td>
+        <td><%= link_to 'Edit', edit_linee_path(linee) %></td>
+        <td><%= link_to 'Destroy', linee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Linee', new_linee_path %>

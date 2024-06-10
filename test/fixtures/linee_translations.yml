@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  belongs_to: 
+  language: MyString
+  content: MyString
+  content_explanation: MyText
+  grammar_explanation: MyText
+
+two:
+  belongs_to: 
+  language: MyString
+  content: MyString
+  content_explanation: MyText
+  grammar_explanation: MyText

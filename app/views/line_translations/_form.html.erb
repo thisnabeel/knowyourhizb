@@ -1,0 +1,37 @@
+<%= form_for(@line_translation) do |f| %>
+  <% if @line_translation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@line_translation.errors.count, "error") %> prohibited this line_translation from being saved:</h2>
+
+      <ul>
+      <% @line_translation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :line_id %><br>
+    <%= f.text_field :line_id %>
+  </div>
+  <div class="field">
+    <%= f.label :language %><br>
+    <%= f.text_field :language %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br>
+    <%= f.text_field :content %>
+  </div>
+  <div class="field">
+    <%= f.label :content_explanation %><br>
+    <%= f.text_area :content_explanation %>
+  </div>
+  <div class="field">
+    <%= f.label :grammar_explanation %><br>
+    <%= f.text_area :grammar_explanation %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

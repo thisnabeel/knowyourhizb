@@ -3,9 +3,14 @@ class Chapter < ActiveRecord::Base
 
   has_many :chapters, dependent: :destroy
   has_many :pieces, dependent: :destroy
+  has_many :lines,  dependent: :destroy
 
   # after_create :init_position
   after_create :make_slug
+
+  def extract_words
+	Arabic.words(self.body)
+  end
   
 	# Find all chapters and check if they have slug
 	def self.make_slugs

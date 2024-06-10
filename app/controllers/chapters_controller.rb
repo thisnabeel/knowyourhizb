@@ -1,5 +1,5 @@
 class ChaptersController < ApplicationController
-  before_action :set_chapter, only: %i[ show update destroy ]
+  before_action :set_chapter, only: %i[ show update destroy words ]
 
   # GET /chapters
   def index
@@ -8,10 +8,18 @@ class ChaptersController < ApplicationController
     render json: @chapters
   end
 
+  def words
+    @words = @chapter.extract_words
+
+    render json: @words
+  end
+
   # GET /chapters/1
   def show
     @chapter = Chapter.includes(:pieces).find_by(slug: params[:id]) || Chapter.find(params[:id])
-    render json: @chapter.as_json(include: :pieces)
+    render json: @chapter, serializer: ChapterSerializer, serializer_options: { 
+      lines: true
+    }
   end
 
   # POST /chapters

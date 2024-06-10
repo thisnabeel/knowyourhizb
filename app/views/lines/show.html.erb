@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Chapter:</strong>
+  <%= @line.chapter %>
+</p>
+
+<p>
+  <strong>Font style:</strong>
+  <%= @line.font_style %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @line.content %>
+</p>
+
+<p>
+  <strong>Direction:</strong>
+  <%= @line.direction %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @line.position %>
+</p>
+
+<p>
+  <strong>Recording url:</strong>
+  <%= @line.recording_url %>
+</p>
+
+<%= link_to 'Edit', edit_line_path(@line) %> |
+<%= link_to 'Back', lines_path %>

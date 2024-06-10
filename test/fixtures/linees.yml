@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  belongs_to: 
+  font_style: MyString
+  content: MyText
+  direction: MyString
+  position: 1
+  recording_url: MyString
+
+two:
+  belongs_to: 
+  font_style: MyString
+  content: MyText
+  direction: MyString
+  position: 1
+  recording_url: MyString

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Line Translations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Line</th>
+      <th>Language</th>
+      <th>Content</th>
+      <th>Content explanation</th>
+      <th>Grammar explanation</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @line_translations.each do |line_translation| %>
+      <tr>
+        <td><%= line_translation.line %></td>
+        <td><%= line_translation.language %></td>
+        <td><%= line_translation.content %></td>
+        <td><%= line_translation.content_explanation %></td>
+        <td><%= line_translation.grammar_explanation %></td>
+        <td><%= link_to 'Show', line_translation %></td>
+        <td><%= link_to 'Edit', edit_line_translation_path(line_translation) %></td>
+        <td><%= link_to 'Destroy', line_translation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Line translation', new_line_translation_path %>

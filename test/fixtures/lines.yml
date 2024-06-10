@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  chapter_id: 
+  font_style: MyString
+  content: MyText
+  direction: MyString
+  position: 1
+  recording_url: MyString
+
+two:
+  chapter_id: 
+  font_style: MyString
+  content: MyText
+  direction: MyString
+  position: 1
+  recording_url: MyString

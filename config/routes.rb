@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :line_translations
+  resources :lines do 
+    member do
+      post 'save_recording'
+    end
+  end
+  resources :line_translations
+
   resources :fiqh_case_principles
   resources :fiqh_principles do
     collection do
@@ -38,6 +46,8 @@ Rails.application.routes.draw do
 
   get '/cached_chapters' => "cults#cached"
   post '/recache_chapters' => "cults#recache"
+
+  get '/chapters/:id/words' => 'chapters#words'
 
   post "/config_cults" => "cults#config_cults"
   # You can have the root of your site routed with "root"
