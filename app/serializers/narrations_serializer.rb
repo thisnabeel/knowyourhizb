@@ -10,7 +10,11 @@ class NarrationsSerializer < ActiveModel::Serializer
   def narrators
     if options && options[:show_full]
       if object.narrator_narrations
-        return object.narrator_narrations.where(language: "arabic").order("position ASC")
+        narrator_narrations = object.narrator_narrations.where(language: "arabic").order("position ASC")
+        return ActiveModel::Serializer::CollectionSerializer.new(
+          narrator_narrations, 
+          serializer: NarratorNarrationSerializer
+        )
       else
         return []
       end

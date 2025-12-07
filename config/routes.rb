@@ -33,6 +33,12 @@ Rails.application.routes.draw do
   resources :hadith_books
   resources :hadith_chapters
   resources :narrations
+  post 'narrator_narrations/:id/link_narrator', to: 'narrations#link_narrator_narration', as: 'link_narrator_narration'
+  resources :narrators do
+    collection do
+      get 'search', to: 'narrators#search'
+    end
+  end
 
   devise_for :users, controllers: {
     sessions: 'users/sessions'

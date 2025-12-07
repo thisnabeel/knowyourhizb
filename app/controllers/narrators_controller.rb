@@ -1,6 +1,6 @@
 class NarratorsController < ApplicationController
   before_action :set_narrator, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:create, :update, :search, :show]
   
   # GET /narrators
   # GET /narrators.json
@@ -42,7 +42,7 @@ class NarratorsController < ApplicationController
     respond_to do |format|
       if @narrator.save
         format.html { redirect_to @narrator, notice: 'Narrator was successfully created.' }
-        format.json { render :show, status: :created, location: @narrator }
+        format.json { render json: @narrator, serializer: NarratorSerializer, status: :created, location: @narrator }
       else
         format.html { render :new }
         format.json { render json: @narrator.errors, status: :unprocessable_entity }
@@ -71,6 +71,26 @@ class NarratorsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to narrators_url, notice: 'Narrator was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # GET /narrators/search
+  def search
+    query = params[:q] || ""
+    # Search primarily by name field, with scholar_index as fallback
+    # Prioritize name matches first
+    name_matches = Narrator.where("name LIKE ?", "%#{query}%").limit(20)
+    
+    # Cast scholar_index to text for LIKE comparison since it's an integer
+    scholar_matches = []
+    if name_matches.count < 20
+      scholar_matches = Narrator.where("CAST(scholar_index AS TEXT) LIKE ? AND name NOT LIKE ?", "%#{query}%", "%#{query}%")
+                                 .limit(20 - name_matches.count)
+    end
+    
+    @narrators = name_matches.to_a + scholar_matches.to_a
+    respond_to do |format|
+      format.json { render json: @narrators, each_serializer: NarratorSerializer }
     end
   end
 

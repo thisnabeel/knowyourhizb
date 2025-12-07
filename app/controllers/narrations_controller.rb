@@ -43,6 +43,18 @@ class NarrationsController < ApplicationController
     head :ok, content_type: "text/html"
   end
 
+  # POST /narrator_narrations/:id/link_narrator
+  def link_narrator_narration
+    narrator_narration = NarratorNarration.find(params[:id])
+    narrator_id = params[:narrator_id].to_i
+    
+    if narrator_id > 0 && narrator_narration.update(narrator_id: narrator_id)
+      render json: { success: true, narrator_narration: NarratorNarrationSerializer.new(narrator_narration) }
+    else
+      render json: { success: false, errors: narrator_narration.errors }, status: :unprocessable_entity
+    end
+  end
+
   # POST /narrations
   # POST /narrations.json
   def create
