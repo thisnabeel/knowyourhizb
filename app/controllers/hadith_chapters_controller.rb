@@ -1,6 +1,6 @@
 class HadithChaptersController < ApplicationController
   before_action :set_hadith_chapter, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /hadith_chapters
   # GET /hadith_chapters.json

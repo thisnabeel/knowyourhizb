@@ -24,9 +24,6 @@ class PiecesController < ApplicationController
   # POST /pieces
   # POST /pieces.json
   def create
-
-    require 'aws-sdk'
-
     @piece = Piece.find_or_create_by(uuid: piece_params[:uuid])
     puts '----'
     puts piece_params

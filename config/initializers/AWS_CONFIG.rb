@@ -15,8 +15,14 @@ AWS_CONFIG = {
   'key_start' => 'uploads/'
 }
 
+# AWS SDK v3 configuration
 Aws.config.update({
-   credentials: Aws::Credentials.new(ENV["AWS_ACCESS_KEY_ID"], ENV["AWS_SECRET_ACCESS_KEY"])
+  region: ENV["AWS_REGION"] || 'us-east-1',
+  credentials: Aws::Credentials.new(
+    ENV["AWS_ACCESS_KEY_ID"],
+    ENV["AWS_SECRET_ACCESS_KEY"]
+  )
 })
 
-S3_BUCKET = Aws::S3::Resource.new.bucket('knowyourhizb')
+# S3 Resource client (compatible with SDK v3)
+S3_BUCKET = Aws::S3::Resource.new(region: ENV["AWS_REGION"] || 'us-east-1').bucket('knowyourhizb')

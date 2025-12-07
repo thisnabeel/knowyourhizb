@@ -2,8 +2,6 @@ class Recorder < ActiveRecord::Base
 
     class << self
         def saveRecording(element, file)
-
-            require 'aws-sdk'
             extension = "mp3"
             file_name = "#{element.id}.#{extension}"
             
@@ -23,13 +21,15 @@ class Recorder < ActiveRecord::Base
 
             system "ffmpeg -i #{of} -vn -ab 128k -ar 44100 -y #{nf}"
 
-            s3 = Aws::S3::Resource.new
-
+            s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"] || 'us-east-1')
             obj = s3.bucket('knowyourhizb').object("#{element.class.name}/#{file_name}")
 
-            bucket = s3.bucket('knowyourhizb')
-            if obj.delete
+            # Delete existing file if it exists
+            begin
+                obj.delete
                 puts "deleted!"
+            rescue Aws::S3::Errors::NoSuchKey
+                # File doesn't exist, which is fine
             end
 
             puts "Uploading file #{file_name}"
@@ -61,24 +61,20 @@ class Recorder < ActiveRecord::Base
         end
 
         def delete_s3_object(url)
-
             begin
                 if url.present?
-                    s3 = Aws::S3::Resource.new
+                    s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"] || 'us-east-1')
                     # reference an existing bucket by name
                     bucket = s3.bucket('knowyourhizb')
 
-                    key = self.recording.split('amazonaws.com/')[1]
-                    bucket.object(key).delete
-
-                    key = self.recording.split('amazonaws.com/')[1]
+                    key = url.split('amazonaws.com/')[1]
                     bucket.object(key).delete
 
                     puts "DELETED RECORDING!!!!"
                 end
-            rescue
+            rescue => e
+                Rails.logger.error("Error deleting S3 object: #{e.message}")
             end
-        
         end
     end 
 end

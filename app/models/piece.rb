@@ -5,9 +5,6 @@ class Piece < ActiveRecord::Base
     before_destroy :delete_s3_object
 
     def saveRecording(file)
-
-        require 'aws-sdk'
-
         file_name = "#{self.uuid}.mp3"
         
 
@@ -26,13 +23,15 @@ class Piece < ActiveRecord::Base
 
         system "ffmpeg -i #{of} -vn -ab 128k -ar 44100 -y #{nf}"
 
-        s3 = Aws::S3::Resource.new
-
+        s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"] || 'us-east-1')
         obj = s3.bucket('knowyourhizb').object("pieces/#{file_name}")
 
-        bucket = s3.bucket('knowyourhizb')
-        if obj.delete
+        # Delete existing file if it exists
+        begin
+            obj.delete
             puts "deleted!"
+        rescue Aws::S3::Errors::NoSuchKey
+            # File doesn't exist, which is fine
         end
 
         puts "Uploading file #{file_name}"
@@ -67,7 +66,7 @@ class Piece < ActiveRecord::Base
 
         begin
             if self.recording.present?
-                s3 = Aws::S3::Resource.new
+                s3 = Aws::S3::Resource.new(region: ENV["AWS_REGION"] || 'us-east-1')
                 # reference an existing bucket by name
                 bucket = s3.bucket('knowyourhizb')
 

@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.rdoc
+
+# Docker
+Dockerfile.origin
+.dockerignore
+
+# Development and test files
+test/
+spec/
+coverage/
+
+# Logs
+log/*
+*.log
+
+# Temporary files
+tmp/*
+!tmp/.keep
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-*
+
+# Environment files (use docker env vars instead)
+.env
+.env.local
+config/application.yml
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+public/assets/*
+!public/assets/.keep
+public/packs/*
+!public/packs/.keep
+
+# Svelte frontend (separate service)
+knowyourhizb-svelte/
+
+# Cache
+.cache/
+.bundle/
+

@@ -1,6 +1,6 @@
 class NarratorsController < ApplicationController
   before_action :set_narrator, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   
   # GET /narrators
   # GET /narrators.json
