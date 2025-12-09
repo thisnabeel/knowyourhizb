@@ -1,6 +1,7 @@
 class Narrator < ActiveRecord::Base
 	
 	has_many :narrator_narrations
+	has_many :tidbits
 
 	def self.find_chain(chain)
 		array = []

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   end
   
   resources :fiqh_cases
+  resources :fiqh_tools
   resources :fiqh_cases
   resources :pieces
   resources :conclusions
@@ -38,6 +39,11 @@ Rails.application.routes.draw do
     collection do
       get 'search', to: 'narrators#search'
     end
+    resources :tidbits do
+      collection do
+        post 'generate', to: 'tidbits#generate'
+      end
+    end
   end
 
   devise_for :users, controllers: {
@@ -56,6 +62,10 @@ Rails.application.routes.draw do
   get '/chapters/:id/words' => 'chapters#words'
 
   post "/config_cults" => "cults#config_cults"
+
+  post "/wizard/ask" => "wizard#ask"
+  post "/wizard/ask.json" => "wizard#ask"
+
   # You can have the root of your site routed with "root"
   root 'pages#home'
 

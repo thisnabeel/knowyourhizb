@@ -4,7 +4,7 @@ class Narration < ActiveRecord::Base
 	belongs_to :hadith_book
 	has_many :resources, as: :resourceable
 	has_many :narrator_narrations
-
+	has_many :narrators, through: :narrator_narrations
 
 	has_many :conclusions
 

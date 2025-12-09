@@ -11,6 +11,12 @@ class NarratorsController < ApplicationController
   # GET /narrators/1
   # GET /narrators/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @narrator, serializer: NarratorSerializer, serializer_options: { include_narrations: true }
+      end
+    end
   end
 
   # GET /narrators/new
@@ -97,7 +103,12 @@ class NarratorsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_narrator
-      @narrator = Narrator.find(params[:id])
+      # For JSON requests in show action, eager load associations
+      if action_name == 'show' && request.format.json?
+        @narrator = Narrator.includes(narrator_narrations: { narration: [:hadith_chapter, hadith_book: :hadith_collection] }).find(params[:id])
+      else
+        @narrator = Narrator.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
