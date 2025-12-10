@@ -20,8 +20,11 @@ RUN gem install bundler --no-document
 # Copy Gemfile and Gemfile.lock first for better Docker layer caching
 COPY Gemfile Gemfile.lock ./
 
+# Configure bundler to exclude development and test groups
+RUN bundle config set --local without 'development test'
+
 # Install gems
-RUN bundle install --jobs 4 --retry 3 --without development test
+RUN bundle install --jobs 4 --retry 3
 
 # Copy application code
 COPY . .
