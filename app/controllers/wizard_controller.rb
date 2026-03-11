@@ -18,6 +18,9 @@ class WizardController < ApplicationController
 
         created = []
         if items.any?
+          # Normalized (downcased) name => Tag, so we prefer existing tags over creating new ones
+          existing_tags_by_normalized = Tag.all.index_by { |t| t.name.to_s.strip.downcase }
+
           base_position = (narration.conclusions.maximum(:position) || 0).to_i
           items.each_with_index do |item, index|
             conclusion = narration.conclusions.create!(
@@ -28,7 +31,13 @@ class WizardController < ApplicationController
 
             Array(item["potential_tags"] || item[:potential_tags]).each do |tag_name|
               next if tag_name.blank?
-              tag = Tag.find_or_create_by!(name: tag_name.to_s.strip)
+              name = tag_name.to_s.strip
+              normalized = name.downcase
+              tag = existing_tags_by_normalized[normalized]
+              unless tag
+                tag = Tag.find_or_create_by!(name: name)
+                existing_tags_by_normalized[normalized] = tag
+              end
               ItemTag.find_or_create_by!(tag: tag, taggable: conclusion)
             end
 
