@@ -69,6 +69,6 @@ class ConclusionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def conclusion_params
-      params.require(:conclusion).permit(:body, :position, :narration_id, :signal)
+      params.require(:conclusion).permit(:title, :body, :position, :narration_id, :signal)
     end
 end

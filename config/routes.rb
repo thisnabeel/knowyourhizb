@@ -24,6 +24,11 @@ Rails.application.routes.draw do
   resources :triggers
   resources :terms
   resources :figures
+  resources :tags, only: [:index, :show] do
+    collection do
+      post 'consolidate', to: 'tags#consolidate'
+    end
+  end
   resources :chapters
   devise_for :admins
   resources :cults

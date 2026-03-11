@@ -1,4 +1,6 @@
 class ConclusionSerializer < ActiveModel::Serializer
-  attributes :id, :body, :position, :signal
+  attributes :id, :title, :body, :position, :signal
+
   has_one :narration
+  has_many :tags
 end

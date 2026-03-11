@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_09_093333) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_11_195100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "extensions.pg_stat_statements"
   enable_extension "extensions.pgcrypto"
@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_093333) do
     t.integer "narration_id"
     t.integer "position"
     t.integer "signal"
+    t.string "title"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["narration_id"], name: "index_conclusions_on_narration_id"
   end
@@ -133,6 +134,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_093333) do
   create_table "hadith_collections", id: :serial, force: :cascade do |t|
     t.string "author"
     t.string "title"
+  end
+
+  create_table "item_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "tag_id", null: false
+    t.integer "taggable_id", null: false
+    t.string "taggable_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id", "taggable_type", "taggable_id"], name: "index_item_tags_on_tag_and_taggable", unique: true
+    t.index ["tag_id"], name: "index_item_tags_on_tag_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_item_tags_on_taggable_type_and_taggable_id"
   end
 
   create_table "line_translations", id: :serial, force: :cascade do |t|
@@ -231,6 +243,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_093333) do
     t.string "video_url"
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.bigint "postable_id"
+    t.string "postable_type"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["postable_type", "postable_id"], name: "index_posts_on_postable"
+  end
+
   create_table "scriptures", id: :serial, force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", precision: nil, null: false
@@ -239,6 +261,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_093333) do
     t.string "title"
     t.datetime "updated_at", precision: nil, null: false
     t.integer "year"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "terms", id: :serial, force: :cascade do |t|
@@ -287,6 +316,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_093333) do
   add_foreign_key "fiqh_case_principles", "fiqh_cases"
   add_foreign_key "fiqh_case_principles", "fiqh_principles"
   add_foreign_key "fiqh_cases", "fiqh_cases"
+  add_foreign_key "item_tags", "tags"
   add_foreign_key "line_translations", "lines"
   add_foreign_key "lines", "chapters"
 end

@@ -1,6 +1,19 @@
 require_relative 'boot'
 
-require 'rails/all'
+require 'rails'
+
+%w[
+  active_model/railtie
+  active_job/railtie
+  active_record/railtie
+  action_controller/railtie
+  action_mailer/railtie
+  action_view/railtie
+  action_cable/engine
+  active_storage/engine
+].each do |railtie|
+  require railtie
+end
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -8,22 +21,12 @@ Bundler.require(*Rails.groups)
 
 module Knowyourcult
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    config.api_only = true
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*', :headers => :any, :methods => [:get, :put, :post, :options, :delete]
+        resource '*', headers: :any, methods: %i[get put post options delete]
       end
     end
   end

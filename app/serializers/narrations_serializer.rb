@@ -33,7 +33,10 @@ class NarrationsSerializer < ActiveModel::Serializer
 
   def conclusions
     if options && options[:show_full]
-      object.conclusions.order("position ASC")
+      ActiveModel::Serializer::CollectionSerializer.new(
+        object.conclusions.order("position ASC"),
+        serializer: ConclusionSerializer
+      )
     else
       return []
     end
