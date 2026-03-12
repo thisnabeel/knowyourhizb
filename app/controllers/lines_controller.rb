@@ -12,6 +12,7 @@ class LinesController < ApplicationController
   def show
   end
 
+  
   # GET /lines/new
   def new
     @line = Line.new
